@@ -11,14 +11,18 @@
 | 4 | Integrate QRAWTHINK cognitive layer | Done | Claude | P0 |
 | 5 | Connect live infrastructure (n8n, vault, APIs) | Blocked | User | P1 |
 | 6 | Define project name + primary objective | Done | User/Claude | P1 |
-| 7 | Initialize architecture (Phase 1 discuss) | In Progress | Claude | P1 |
-| 8 | Answer P1-CONTEXT.md architecture questions | Awaiting | User | P1 |
-| 9 | Create P1-PLAN.md (after questions answered) | Blocked | Claude | P1 |
-| 10 | Execute Phase 1 tasks | Not started | Claude | P1 |
+| 7 | Initialize architecture (Phase 1 discuss) | Done | Claude | P1 |
+| 8 | Answer P1-CONTEXT.md architecture questions | Done | User | P1 |
+| 9 | Create voice-profile.json | Done | Claude | P1 |
+| 10 | Create P1-PLAN.md | Done | Claude | P1 |
+| 11 | User: set up n8n Cloud + provide credentials | Awaiting | User | P1 |
+| 12 | User: provide Terminal/Cathedral text samples | Awaiting | User | P1 |
+| 13 | Execute Wave 1 (P1-01, P1-02, P1-03) | Blocked | Claude | P1 |
+| 14 | Execute Wave 2 (P1-04, P1-05) | Blocked | Claude | P1 |
+| 15 | Execute Wave 3 (P1-06) | Blocked | Claude | P1 |
 
 ## Blocked On
 
-- P1-CONTEXT.md answers (tech stack, voice profile, platforms, input method, deployment, n8n status)
-- Obsidian vault path (for Claudesidian + qmd)
-- Firecrawl API key (for web scraping MCP)
-- n8n instance URL + API key (for live workflow management)
+- n8n Cloud account + URL + API key (for live workflow deployment)
+- Terminal EP1, EP7 + Cathedral Transmissions 001-003 text (for voice calibration)
+- Vercel account (for approval UI deployment)

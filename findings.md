@@ -32,6 +32,26 @@
 ### RAW Network Architecture (defined)
 - Primary objective: raw input → QJ RAW-voiced content → multi-channel distribution → single-tap approval
 - 6-stage pipeline: Ingest → Voice → Content → Approval → Distribution → Feedback
-- Recommended stack: n8n-first for pipeline + Next.js for approval UI
+- Confirmed stack: n8n Cloud (pipeline) + Next.js/Vercel (approval UI)
 - 3 milestones: Foundation (core pipeline) → Scale (multi-platform) → Intelligence (cognitive layer)
 - 14 requirements scoped across 7 phases
+
+### Voice Profile (resolved)
+- Tone: direct, raw, no-bullshit, poetic-when-it-matters, military-precise
+- Archetype: "Marine who reads philosophy"
+- Always use: frequency, transmission, terminal, sovereign, raw, goo phase, convergence, operator, deployed, signal
+- Never use: journey, hustle, grind, authenticity (buzzword), content creator, In conclusion, I hope this helps
+- Voice ceiling: Cathedral Transmissions 001-003
+- Clearest samples: Terminal EP1 (Resilience), EP7 (Courage)
+- Guardrails enforce vocabulary, reject LinkedIn influencer tone, limit emoji/exclamation marks
+
+### Platform Strategy (resolved)
+- M1: LinkedIn (conversion) + Substack (long-form, paid subs)
+- M2: TikTok + Instagram
+- Eventually: all platforms
+- Input priority: voice-first → text → photos → video
+
+### Deployment (resolved)
+- n8n Cloud (new instance, needs setup)
+- Vercel for Next.js approval UI
+- Zero local machine dependency

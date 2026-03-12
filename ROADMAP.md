@@ -6,7 +6,7 @@
 | Phase | Name | Status | Output |
 |-------|------|--------|--------|
 | P0 | Framework Setup | Done | CLAUDE.md, PROJECT.md, STATE.md, persistence files |
-| P1 | Core Pipeline (text → content) | Discussing | Ingest + Voice + Content engines |
+| P1 | Core Pipeline (text → content) | Planned | Ingest + Voice + Content engines |
 | P2 | Approval + Distribution | Not started | Approval UI + n8n deployment workflow |
 | P3 | Multi-Input (voice, image) | Not started | Transcription + image captioning |
 

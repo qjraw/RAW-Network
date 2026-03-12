@@ -1,6 +1,12 @@
 # Progress — RAW Network
 > 3-bullet session summaries, newest first.
 
+## 2026-03-12 — Session 1 (Phase 1 plan complete)
+
+- All 6 architecture questions resolved: n8n Cloud + Next.js/Vercel, voice-first, LinkedIn + Substack
+- Created voice-profile.json (tone, vocabulary, guardrails, platform formatting)
+- Created P1-PLAN.md: 6 tasks in 3 waves (3 parallel → 2 parallel → 1 sequential)
+
 ## 2026-03-12 — Session 1 (Phase 1 discuss)
 
 - Defined project: RAW Network — autonomous content intelligence system

@@ -1,92 +1,80 @@
 # P1-CONTEXT.md — Core Pipeline (text → content)
-> Phase 1 discuss document. Captures implementation preferences before planning.
+> Phase 1 discuss document. All decisions resolved 2026-03-12.
 
 ## Phase Goal
 
-Build the foundational pipeline: text input → QJ RAW voice processing → platform-formatted content output.
+Build the foundational pipeline: voice/text input → QJ RAW voice processing → LinkedIn + Substack formatted content → approval interface.
 
-## Architecture Questions to Resolve
+## Resolved Decisions
 
-### 1. Tech Stack
+### 1. Tech Stack — CONFIRMED
 
-**Question:** What stack are we building this in?
+- **Pipeline:** n8n Cloud (workflow-native, no local dependency)
+- **Approval UI:** Next.js on Vercel
+- **Voice Engine:** Prompt-based with `voice-profile.json` identity layer
 
-Options:
-- **A) Full Node.js/TypeScript** — n8n is JS-native, fast iteration, single language
-- **B) Python backend + React frontend** — Better AI/ML libraries, separate concerns
-- **C) n8n-first (workflow-native)** — Build as much as possible as n8n workflows, minimal custom code
-- **D) Next.js full-stack** — React frontend + API routes, deploy as one unit
+### 2. Voice Profile — QJ RAW
 
-**Recommendation:** Option C (n8n-first) for the automation pipeline + Option D (Next.js) for the approval interface. Rationale: n8n handles the content pipeline natively (1,084 nodes), while Next.js gives us a clean approval UI that respects UIUX Promax constraints.
+**Tone (5 words):** direct, raw, no-bullshit, poetic-when-it-matters, military-precise
 
-### 2. Voice Engine — How to Capture QJ RAW's Voice
+**Always use:**
+frequency, transmission, terminal, sovereign, raw, goo phase, convergence, operator, deployed, signal
 
-**Question:** How do we define and enforce your voice?
+**Never use:**
+"journey," "hustle," "grind," "authenticity" (as buzzword), "content creator," "In conclusion," "I hope this helps"
 
-Needs from you:
-- [ ] 5-10 example posts/pieces that sound like "you"
-- [ ] Words/phrases you always use
-- [ ] Words/phrases you never use
-- [ ] Tone descriptors (e.g., direct, raw, no-bullshit, poetic-when-it-matters)
-- [ ] Any content you've seen that made you think "that's how I want to sound"
+**Voice references:**
+- Terminal EP1 (Resilience) — clearest voice sample
+- Terminal EP7 (Courage) — clearest voice sample
+- Cathedral Transmissions 001, 002, 003 — written voice ceiling
 
-This becomes the `voice-profile.json` — the identity enforcement layer.
+**Voice rules:**
+- Write like a Marine who reads philosophy
+- Short sentences hit harder than long ones
+- Metaphor is a weapon, not decoration
+- Every word earns its place or gets cut
+- Vulnerability is strength, not softness
+- No corporate polish. No AI slop. No filler.
 
-### 3. Platform Priority
+### 3. Platforms — M1 Priority
 
-**Question:** Which platforms first?
+1. **LinkedIn** — where RAW Sessions conversions happen
+2. **Substack** — long-form, newsletter, paid subscribers
 
-- [ ] X / Twitter
-- [ ] Instagram (feed? stories? reels captions?)
-- [ ] LinkedIn
-- [ ] TikTok (captions)
-- [ ] YouTube (descriptions, titles)
-- [ ] Blog / personal site
-- [ ] Email newsletter
-- [ ] Other: ___
+M2 additions: TikTok, Instagram. All platforms eventually.
 
-### 4. Input Method
+### 4. Input Method — Voice-First
 
-**Question:** How will you primarily input raw content?
+- **Primary:** Voice memos (phone → transcription → pipeline)
+- **Secondary:** Text input
+- **Tertiary:** Photos, video
+- **Architecture:** Build voice-first, everything else follows same pipeline after ingest
 
-- [ ] Typing into a web interface
-- [ ] Voice memos (phone → transcription)
-- [ ] Photos with context
-- [ ] Video clips
-- [ ] Obsidian notes from vault
-- [ ] All of the above (eventually)
+### 5. Deployment — Cloud
 
-### 5. Deployment Target
+- **n8n:** n8n Cloud (new instance needed)
+- **Approval UI:** Vercel (Next.js)
+- **No local machine dependency**
 
-**Question:** Where does this run?
+### 6. n8n Instance — New Setup Required
 
-- [ ] Self-hosted (your own server / VPS)
-- [ ] Cloud (Vercel + hosted n8n)
-- [ ] Local-first (runs on your machine)
-- [ ] Hybrid
+- No existing instance
+- Will use n8n Cloud
+- Need to provision before P1 execution
 
-### 6. n8n Instance
-
-**Question:** Do you have an n8n instance running, or do we need to set one up?
-
-- [ ] I have one running at: ___
-- [ ] I need to set one up
-- [ ] I'll use n8n Cloud
-
----
-
-## Decisions Made So Far
+## Decisions Summary
 
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
 | Framework | QRAWTHINK + GSD | Context management + spec-driven development |
 | Front-end rules | UIUX Promax | No AI slop, accessible, semantic tokens |
-| Automation engine | n8n | 1,084 nodes, MCP integration, workflow-native |
-
-## What's Blocking Planning
-
-The P1-PLAN.md cannot be created until the questions above are answered. These are the "gray areas" that GSD requires resolving in the discuss phase — not during execution.
+| Pipeline engine | n8n Cloud | Workflow-native, 1,084 nodes, no local dependency |
+| Approval UI | Next.js + Vercel | Clean deploy, UIUX Promax compliant |
+| Voice identity | voice-profile.json | Enforceable, versionable, auditable |
+| Platform priority | LinkedIn + Substack | Where money moves |
+| Input priority | Voice-first | Primary use case, everything else inherits pipeline |
+| Voice tone | direct, raw, military-precise, poetic | Marine who reads philosophy |
 
 ---
 
-*Answer these questions and I build the plan.*
+*Discuss phase complete. Ready for P1-PLAN.md.*
