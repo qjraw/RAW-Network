@@ -1,6 +1,12 @@
 # Progress — RAW Network
 > 3-bullet session summaries, newest first.
 
+## 2026-03-12 — Session 1 (Phase 1 COMPLETE)
+
+- Wave 1 (parallel): Next.js scaffold + voice engine prompts + n8n architecture — all done
+- Wave 2 (parallel): Approval UI components + production n8n pipeline JSON — all done
+- Wave 3: E2E test plan with 3 test inputs, 13 voice checks, 25 approval flow checks — done
+
 ## 2026-03-12 — Session 1 (Phase 1 plan complete)
 
 - All 6 architecture questions resolved: n8n Cloud + Next.js/Vercel, voice-first, LinkedIn + Substack

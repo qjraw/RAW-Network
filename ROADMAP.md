@@ -6,7 +6,7 @@
 | Phase | Name | Status | Output |
 |-------|------|--------|--------|
 | P0 | Framework Setup | Done | CLAUDE.md, PROJECT.md, STATE.md, persistence files |
-| P1 | Core Pipeline (text → content) | Executing | Ingest + Voice + Content engines |
+| P1 | Core Pipeline (text → content) | Done | Next.js app, voice engine, n8n pipeline, approval UI, E2E tests |
 | P2 | Approval + Distribution | Not started | Approval UI + n8n deployment workflow |
 | P3 | Multi-Input (voice, image) | Not started | Transcription + image captioning |
 
