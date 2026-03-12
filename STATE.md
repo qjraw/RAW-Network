@@ -4,55 +4,52 @@
 ## Current Status
 
 - **Active Branch:** `claude/implement-gsd-framework-MIEH2`
-- **Current Phase:** P0 complete — framework + cognitive stack loaded
-- **Position:** QRAWTHINK + GSD + UIUX Promax + n8n MCP all integrated. Awaiting project name + objective + infrastructure credentials.
+- **Current Phase:** P1 — Discuss (Core Pipeline)
+- **Position:** Project defined. P1-CONTEXT.md created with 6 architecture questions awaiting user input.
 
-## What Was Done This Session
-
-- Applied GSD (Get Shit Done) framework as spec-driven development layer
-- Integrated UIUX Promax design constraints (WCAG, typography, semantic tokens)
-- Configured n8n MCP server in doc-mode (.mcp.json)
-- Integrated QRAWTHINK cognitive stack as Layer 0 (tool routing, memory protocol, delegation rules)
-- Catalogued all user-requested tools into loaded / needs-credentials / aspirational tiers
-- Created multi-session persistence files: task_plan.md, findings.md, progress.md
-- Created PROJECT.md, REQUIREMENTS.md, ROADMAP.md
-
-## Active Stack (4 layers)
+## Active Stack
 
 | Layer | System | Status |
 |-------|--------|--------|
 | 0 | QRAWTHINK Cognitive OS | Active |
-| 1 | GSD Framework | Active |
+| 1 | GSD Framework | Active — in P1 discuss phase |
 | 2 | UIUX Promax | Active |
 | 3 | n8n MCP | Configured (doc-mode) |
 
+## What Was Done This Session
+
+- Defined project: RAW Network — autonomous content intelligence system
+- Updated PROJECT.md with primary objective, system architecture diagram, 6 core components
+- Created REQUIREMENTS.md with 14 requirements across 3 milestones
+- Created ROADMAP.md with 7 phases across 3 milestones
+- Entered GSD Phase 1 discuss — created P1-CONTEXT.md with 6 architecture questions
+
 ## Key Decisions Made
 
-- QRAWTHINK is the outermost cognitive layer — tool routing, memory, delegation
-- GSD handles spec-driven development — phases, plans, atomic execution
-- UIUX Promax is non-negotiable for any front-end work
-- n8n MCP is the automation engine — full mode needs credentials
-- Delegation threshold: >5 tool calls = sub-agent
+- Project name: RAW Network
+- Primary objective: Transform raw input → platform-ready, QJ RAW-voiced content → single-tap distribution
+- Pipeline: Ingest → Voice → Content → Approval → Distribution → Feedback
+- Milestone 1 scope: Text → content, 1 platform, approval UI, 1 deployment channel
 
-## Open Questions / Blockers
+## Blocking Items (need user answers)
 
-- [ ] Project name? (awaiting user input)
-- [ ] Primary objective? (awaiting user input)
-- [ ] Obsidian vault path? (needed for Claudesidian + qmd)
-- [ ] Firecrawl API key? (needed for web scraping MCP)
-- [ ] n8n instance URL + API key? (needed for live workflow management)
-- [ ] Composio API key? (needed for SaaS routing)
+- [ ] Tech stack choice (n8n-first + Next.js recommended)
+- [ ] Voice profile inputs (example posts, tone descriptors, vocabulary)
+- [ ] Platform priority order
+- [ ] Primary input method
+- [ ] Deployment target (self-hosted / cloud / local)
+- [ ] n8n instance status (existing / needs setup / cloud)
 
 ## Architecture Decisions Log
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
-| 2026-03-12 | Applied GSD framework | Prevent context rot across long development sessions |
-| 2026-03-12 | Atomic commits per task | Enable git bisect + independent reversion |
-| 2026-03-12 | UIUX Promax constraints locked | Prevent generic AI slop in interfaces |
-| 2026-03-12 | n8n MCP doc-mode integration | Enable workflow knowledge without requiring live instance |
-| 2026-03-12 | QRAWTHINK as Layer 0 | Cognitive routing + memory persistence across sessions |
-| 2026-03-12 | 3-tier tool classification | Separate what's active from what needs user action |
+| 2026-03-12 | Applied GSD framework | Prevent context rot |
+| 2026-03-12 | UIUX Promax constraints | No AI slop in interfaces |
+| 2026-03-12 | n8n MCP integration | 1,084 nodes for automation |
+| 2026-03-12 | QRAWTHINK as Layer 0 | Cognitive routing + memory |
+| 2026-03-12 | Project: RAW Network | Autonomous content intelligence |
+| 2026-03-12 | 3-milestone roadmap | Foundation → Scale → Intelligence |
 
 ---
 

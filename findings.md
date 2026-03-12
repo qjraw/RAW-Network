@@ -28,3 +28,10 @@
 - Layered routing: local vault → web search → API docs → SaaS automation
 - Mandatory memory protocol with session start/end hygiene
 - Delegation threshold: >5 tool calls = spawn sub-agent
+
+### RAW Network Architecture (defined)
+- Primary objective: raw input → QJ RAW-voiced content → multi-channel distribution → single-tap approval
+- 6-stage pipeline: Ingest → Voice → Content → Approval → Distribution → Feedback
+- Recommended stack: n8n-first for pipeline + Next.js for approval UI
+- 3 milestones: Foundation (core pipeline) → Scale (multi-platform) → Intelligence (cognitive layer)
+- 14 requirements scoped across 7 phases
