@@ -81,4 +81,97 @@ Each phase produces:
 
 ---
 
-*GSD framework active. Context rot is not an option.*
+## UIUX PROMAX — Front-End Design Constraints
+
+> Sourced from: github.com/nextlevelbuilder/ui-ux-pro-max-skill
+> These rules are NON-NEGOTIABLE for any interface component.
+
+### Critical (Must Never Violate)
+
+- **Contrast:** Minimum 4.5:1 ratio for all normal text (WCAG AA).
+- **Touch targets:** Minimum 44x44px with 8px spacing between interactive elements.
+- **Feedback latency:** Interactive feedback must appear within 100ms of user input.
+
+### High Priority
+
+- **Performance:** Use WebP/AVIF for images. Cumulative Layout Shift (CLS) < 0.1.
+- **Responsive:** Mobile-first design with systematic breakpoints.
+- **No generic AI slop:** Every visual decision must serve a functional purpose. No decorative gradients, no gratuitous shadows, no placeholder aesthetics.
+
+### Typography
+
+- Base body text: 16px minimum, line-height 1.5–1.75.
+- Font pairings must come from validated pairing databases, not arbitrary selection.
+
+### Color & Theming
+
+- Use **semantic color tokens** (e.g., `--color-primary`, `--color-surface`), never raw hex values in components.
+- All components must support light and dark modes.
+- Disabled states use reduced opacity (0.38–0.5), never hidden elements.
+
+### Interaction & Accessibility
+
+- Keyboard navigation support on all interactive elements.
+- Screen reader compatibility (semantic HTML, ARIA labels where needed).
+- Respect `prefers-reduced-motion` — animations 150–300ms for micro-interactions.
+
+### Design System Generation Protocol
+
+When creating any new UI component or page:
+1. **Analyze** — Identify product type, audience, and style requirements.
+2. **Generate** — Produce a design system spec (tokens, spacing scale, type scale) before writing any component code.
+3. **Search** — Query for domain-specific patterns (SaaS, dashboard, portfolio, etc.).
+4. **Apply** — Use stack-appropriate guidelines (React, Next.js, Tailwind, etc.).
+
+---
+
+## N8N MCP INTEGRATION — Automation Engine
+
+> Sourced from: github.com/czlonkowski/n8n-mcp
+> MCP server providing access to 1,084 n8n nodes (537 core + 547 community).
+
+### What's Available
+
+- 99% property coverage with detailed schemas
+- 265 AI-capable tool variants
+- 2,646 real-world workflow examples
+- 2,709 workflow templates with metadata
+
+### MCP Configuration
+
+The n8n MCP server is configured in `.mcp.json` at project root.
+
+To add via CLI:
+```bash
+claude mcp add n8n-mcp \
+  -e MCP_MODE=stdio \
+  -e LOG_LEVEL=error \
+  -e DISABLE_CONSOLE_OUTPUT=true \
+  -- npx n8n-mcp
+```
+
+For full n8n instance management, add:
+```
+-e N8N_API_URL=<your-n8n-url>
+-e N8N_API_KEY=<your-api-key>
+```
+
+### Verification
+
+```bash
+claude mcp list
+claude mcp get n8n-mcp
+```
+
+In-session: use `/mcp` to confirm ~39 tools are available.
+
+### Safety Rules
+
+- **NEVER** edit production workflows directly via AI.
+- Always create workflow copies before modification.
+- Test in development environments first.
+- Export backups before deploying changes.
+
+---
+
+*GSD framework active. UIUX Promax locked. n8n MCP indexed. Context rot is not an option.*
