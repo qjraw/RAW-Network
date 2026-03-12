@@ -1,11 +1,53 @@
-# GSD Framework — Active Rules for RAW Network
+# QRAWTHINK Cognitive Stack + GSD Framework — RAW Network
 
-> Sourced from: github.com/glittercowboy/get-shit-done (v1.x core spec)
+> Layer 0: QRAWTHINK — Cognitive routing, memory persistence, delegation rules
+> Layer 1: GSD — Spec-driven development, sub-agent orchestration, atomic execution
+> Layer 2: UIUX Promax — Front-end design intelligence
+> Layer 3: n8n MCP — Workflow automation engine
 > Applied: 2026-03-12
 
 ---
 
-## ACTIVE GSD OPERATING RULES
+## LAYER 0: QRAWTHINK COGNITIVE OPERATING SYSTEM
+
+### Tool Routing (check before every task)
+
+1. **LOCAL FIRST:** Before any web search, check project files (`task_plan.md`, `findings.md`, `progress.md`) and vault (when connected via qmd/Claudesidian).
+2. **WEB ONLY IF NEEDED:** If local context returns no match or stale data, then search the web.
+3. **API DOCS:** Use Context7 MCP for library/API questions before guessing (when configured).
+4. **TOOL AUTOMATION:** Route SaaS actions through Composio (when configured).
+
+### Memory Protocol (mandatory)
+
+1. **SESSION START:** Read `PROJECT.md` → `STATE.md` → `task_plan.md` → current phase PLAN.
+2. **DURING SESSION:** After every major finding or decision, update `findings.md`.
+3. **SESSION END:** Update `STATE.md` + write 3-bullet summary to `progress.md` under today's date.
+4. **MULTI-SESSION PROJECTS:** Maintain `task_plan.md`, `findings.md`, `progress.md` at project root.
+
+### Delegation Rules
+
+- **DIRECT:** Tasks < 5 tool calls, single domain, clear output → handle in orchestrator.
+- **SUB-AGENT:** Tasks > 5 tool calls, multi-domain, or require parallelism → spawn with fresh context.
+  - Pass sub-agents: (a) goal, (b) relevant file excerpts, (c) output format.
+  - Never load full vault files — use targeted reads and searches.
+
+### Context Economy
+
+- Context budget: 200K tokens. Reserve 20% for output.
+- Load skills/tools on-demand, not preloaded.
+- Offload domain knowledge to sub-agents.
+- Main session stays at 30–40% utilization.
+
+### Quality Gate (run before every response)
+
+- Did I check local files before searching the web?
+- Did I save new findings to findings.md?
+- Did I update task_plan.md if this is a multi-session project?
+- Is my output structured enough that the next session can resume from it?
+
+---
+
+## LAYER 1: GSD OPERATING RULES
 
 ### 1. Context Management
 
@@ -174,4 +216,41 @@ In-session: use `/mcp` to confirm ~39 tools are available.
 
 ---
 
-*GSD framework active. UIUX Promax locked. n8n MCP indexed. Context rot is not an option.*
+## TOOL INTEGRATION STATUS
+
+> This section tracks what is loaded, what needs credentials, and what's aspirational.
+
+### LOADED (active now)
+
+| Tool | Status | Notes |
+|------|--------|-------|
+| GSD Framework | Active | Core orchestration layer |
+| UIUX Promax Rules | Active | Design constraints locked in CLAUDE.md |
+| n8n MCP (doc-mode) | Configured | `.mcp.json` present; needs `npx n8n-mcp` available |
+
+### NEEDS CREDENTIALS / PATHS (you provide, I wire up)
+
+| Tool | What's Needed | Install Command |
+|------|---------------|-----------------|
+| n8n MCP (full) | `N8N_API_URL` + `N8N_API_KEY` | Update `.mcp.json` env vars |
+| Firecrawl MCP | `FIRECRAWL_API_KEY` | `claude mcp add firecrawl -- npx -y firecrawl-mcp` |
+| Context7 MCP | None (free) | `claude mcp add context7 -- npx -y c7-mcp-server` |
+| Claudesidian MCP | Obsidian vault path | `claude mcp add claudesidian -- claudesidian /path/to/vault` |
+| qmd (vault search) | Obsidian vault path | `bun install -g qmd` then `qmd index /path/to/vault` |
+| Composio | API key | `pip install composio` |
+| OpenCode MCP | None | `claude mcp add opencode -- npx -y opencode-mcp-tool` |
+
+### ASPIRATIONAL (install when infrastructure is ready)
+
+| Tool | Repo | Purpose |
+|------|------|---------|
+| claude-mem | thedotmack/claude-mem | Cross-session memory persistence |
+| obsidian-skills | kepano/obsidian-skills | Obsidian vault skill templates |
+| COG-second-brain | huytieu/COG-second-brain | Cognitive architecture for Obsidian |
+| superpowers | obra/superpowers-marketplace | Extended Claude Code capabilities |
+| planning-with-files | othmanadi/planning-with-files | Multi-session file-based planning |
+| claude-workflow-v2 | CloudAI-X/claude-workflow-v2 | Workflow automation skill |
+
+---
+
+*QRAWTHINK cognitive stack active. GSD framework locked. UIUX Promax enforced. n8n MCP indexed. Context rot is not an option.*

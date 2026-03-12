@@ -4,38 +4,44 @@
 ## Current Status
 
 - **Active Branch:** `claude/implement-gsd-framework-MIEH2`
-- **Current Phase:** GSD Framework Initialization + Tool Integration
-- **Position:** All three engines loaded (GSD + UIUX Promax + n8n MCP). Awaiting project name + primary objective.
+- **Current Phase:** P0 complete — framework + cognitive stack loaded
+- **Position:** QRAWTHINK + GSD + UIUX Promax + n8n MCP all integrated. Awaiting project name + objective + infrastructure credentials.
 
 ## What Was Done This Session
 
-- Researched and ingested GSD (Get Shit Done) framework specification
-- Created `CLAUDE.md` — active GSD rules (context management, sub-agent handling, planning, execution)
-- Created `PROJECT.md` — north star vision document (always loaded)
-- Created `STATE.md` (this file) — session memory
-- Created `REQUIREMENTS.md` — requirements shell awaiting first project definition
-- Created `ROADMAP.md` — roadmap shell awaiting phase definition
-- Ingested UIUX Promax design system rules (nextlevelbuilder/ui-ux-pro-max-skill)
-- Applied front-end design constraints to CLAUDE.md (contrast, touch targets, typography, color tokens, accessibility)
-- Ingested n8n MCP server spec (czlonkowski/n8n-mcp) — 1,084 nodes indexed
-- Created `.mcp.json` for n8n MCP integration
-- Documented n8n verification and safety rules in CLAUDE.md
+- Applied GSD (Get Shit Done) framework as spec-driven development layer
+- Integrated UIUX Promax design constraints (WCAG, typography, semantic tokens)
+- Configured n8n MCP server in doc-mode (.mcp.json)
+- Integrated QRAWTHINK cognitive stack as Layer 0 (tool routing, memory protocol, delegation rules)
+- Catalogued all user-requested tools into loaded / needs-credentials / aspirational tiers
+- Created multi-session persistence files: task_plan.md, findings.md, progress.md
+- Created PROJECT.md, REQUIREMENTS.md, ROADMAP.md
+
+## Active Stack (4 layers)
+
+| Layer | System | Status |
+|-------|--------|--------|
+| 0 | QRAWTHINK Cognitive OS | Active |
+| 1 | GSD Framework | Active |
+| 2 | UIUX Promax | Active |
+| 3 | n8n MCP | Configured (doc-mode) |
 
 ## Key Decisions Made
 
-- GSD framework applied to RAW Network workspace
-- Using standard GSD phase lifecycle: discuss → plan → execute → verify
-- Phase file naming convention: `{phase-name}-CONTEXT.md`, `{phase-name}-PLAN.md`, `{phase-name}-SUMMARY.md`
-- UIUX Promax rules locked as non-negotiable front-end constraints
-- n8n MCP configured for documentation-mode (no live instance connected yet)
-- Target: autonomous n8n workflow agent
+- QRAWTHINK is the outermost cognitive layer — tool routing, memory, delegation
+- GSD handles spec-driven development — phases, plans, atomic execution
+- UIUX Promax is non-negotiable for any front-end work
+- n8n MCP is the automation engine — full mode needs credentials
+- Delegation threshold: >5 tool calls = sub-agent
 
 ## Open Questions / Blockers
 
-- [ ] Project name confirmed? (awaiting user input)
-- [ ] Primary objective defined? (awaiting user input)
-- [ ] First phase scope agreed? (pending above)
-- [ ] n8n instance URL + API key needed for full workflow management
+- [ ] Project name? (awaiting user input)
+- [ ] Primary objective? (awaiting user input)
+- [ ] Obsidian vault path? (needed for Claudesidian + qmd)
+- [ ] Firecrawl API key? (needed for web scraping MCP)
+- [ ] n8n instance URL + API key? (needed for live workflow management)
+- [ ] Composio API key? (needed for SaaS routing)
 
 ## Architecture Decisions Log
 
@@ -45,6 +51,8 @@
 | 2026-03-12 | Atomic commits per task | Enable git bisect + independent reversion |
 | 2026-03-12 | UIUX Promax constraints locked | Prevent generic AI slop in interfaces |
 | 2026-03-12 | n8n MCP doc-mode integration | Enable workflow knowledge without requiring live instance |
+| 2026-03-12 | QRAWTHINK as Layer 0 | Cognitive routing + memory persistence across sessions |
+| 2026-03-12 | 3-tier tool classification | Separate what's active from what needs user action |
 
 ---
 
