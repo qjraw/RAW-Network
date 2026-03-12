@@ -15,14 +15,12 @@
 | 8 | Answer P1-CONTEXT.md architecture questions | Done | User | P1 |
 | 9 | Create voice-profile.json | Done | Claude | P1 |
 | 10 | Create P1-PLAN.md | Done | Claude | P1 |
-| 11 | User: set up n8n Cloud + provide credentials | Awaiting | User | P1 |
-| 12 | User: provide Terminal/Cathedral text samples | Awaiting | User | P1 |
-| 13 | Execute Wave 1 (P1-01, P1-02, P1-03) | Blocked | Claude | P1 |
-| 14 | Execute Wave 2 (P1-04, P1-05) | Blocked | Claude | P1 |
+| 11 | User: set up n8n Cloud + provide credentials | Done | User | P1 |
+| 12 | User: provide Terminal/Cathedral text samples | Done | User | P1 |
+| 13 | Execute Wave 1 (P1-01, P1-02, P1-03) | Done | Claude | P1 |
+| 14 | Execute Wave 2 (P1-04, P1-05) | In Progress | Claude | P1 |
 | 15 | Execute Wave 3 (P1-06) | Blocked | Claude | P1 |
 
 ## Blocked On
 
-- n8n Cloud account + URL + API key (for live workflow deployment)
-- Terminal EP1, EP7 + Cathedral Transmissions 001-003 text (for voice calibration)
-- Vercel account (for approval UI deployment)
+- Wave 2 completion (P1-04 approval UI + P1-05 n8n pipeline)
