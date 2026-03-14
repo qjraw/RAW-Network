@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = "edge";
+
 // TODO: Replace mock with n8n webhook call for distribution
 
 export async function POST(request: NextRequest) {

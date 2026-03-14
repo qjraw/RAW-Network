@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const runtime = "edge";
+
 // TODO: Replace mock with n8n webhook call to https://qrawthink.app.n8n.cloud/webhook/raw-input
 
 export async function POST(request: NextRequest) {
