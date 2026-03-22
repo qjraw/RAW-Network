@@ -1,7 +1,5 @@
 {
-  "id": "raw-content-pipeline-v1",
   "name": "RAW Network — Content Pipeline",
-  "active": false,
   "nodes": [
     {
       "parameters": {
@@ -851,18 +849,5 @@
     "saveManualExecutions": true,
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "staticData": null,
-  "tags": [
-    {
-      "name": "RAW Network",
-      "id": "raw-network"
-    },
-    {
-      "name": "P1 — Core Pipeline",
-      "id": "p1-core-pipeline"
-    }
-  ],
-  "triggerCount": 1,
-  "updatedAt": "2026-03-12T00:00:00.000Z",
-  "versionId": "p1-05-production"
+  "staticData": null
 }
