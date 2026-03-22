@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
 
-// TODO: Replace mock with n8n webhook call for distribution
+const N8N_APPROVE_URL =
+  process.env.N8N_APPROVE_URL || "https://qrawthink.app.n8n.cloud/webhook/approve-content";
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,19 +31,55 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Mock response — simulates a successful approval action.
-    const response = {
-      success: true,
-      id,
-      platform,
-      action,
-      ...(action === "edit" && edited_content
-        ? { edited_content }
-        : {}),
-      timestamp: new Date().toISOString(),
-    };
+    // Call n8n approval webhook
+    const n8nRes = await fetch(N8N_APPROVE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, platform, action, edited_content }),
+    });
 
-    return NextResponse.json(response, { status: 200 });
+    if (!n8nRes.ok) {
+      const errText = await n8nRes.text();
+      console.error("n8n approval error:", n8nRes.status, errText);
+      return NextResponse.json(
+        { error: "Approval action failed. Please try again." },
+        { status: 502 }
+      );
+    }
+
+    const result = await n8nRes.json();
+
+    // Update status in Supabase (fire-and-forget)
+    if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
+      const statusColumn = platform === "linkedin" ? "linkedin_status" : "substack_status";
+      const statusValue = action === "approve" ? "approved" : action === "reject" ? "rejected" : "pending";
+
+      fetch(
+        `${SUPABASE_URL}/rest/v1/submissions?pipeline_id=eq.${encodeURIComponent(id)}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SUPABASE_SERVICE_KEY,
+            Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`,
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify({ [statusColumn]: statusValue }),
+        }
+      ).catch((err) => console.error("Supabase update error:", err));
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        id,
+        platform,
+        action,
+        ...(action === "edit" && edited_content ? { edited_content } : {}),
+        timestamp: result.timestamp || new Date().toISOString(),
+      },
+      { status: 200 }
+    );
   } catch {
     return NextResponse.json(
       { error: "Invalid request body" },
