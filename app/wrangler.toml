@@ -5,3 +5,13 @@ main = ".vercel/output/static/_worker.js/index.js"
 
 [assets]
 directory = ".vercel/output/static"
+
+# Environment variables for edge runtime API routes.
+# Set these in the Cloudflare Dashboard → Pages → raw-network → Settings → Environment variables
+# OR via wrangler: wrangler pages secret put N8N_WEBHOOK_URL --project-name=raw-network
+#
+# Required secrets:
+#   N8N_WEBHOOK_URL = https://qrawthink.app.n8n.cloud/webhook/raw-input
+#   N8N_APPROVE_URL = https://qrawthink.app.n8n.cloud/webhook/approve-content
+#   NEXT_PUBLIC_SUPABASE_URL = https://YOUR_PROJECT.supabase.co
+#   SUPABASE_SERVICE_ROLE_KEY = your-service-role-key

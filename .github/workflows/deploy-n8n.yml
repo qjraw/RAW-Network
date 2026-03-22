@@ -10,18 +10,27 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        workflow:
+          - file: content-pipeline.json
+            name: "RAW Network — Content Pipeline"
+          - file: approval-distribution.json
+            name: "RAW Network — Approval & Distribution"
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy content-pipeline to n8n
+      - name: Deploy ${{ matrix.workflow.name }} to n8n
         env:
           N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
           N8N_API_URL: https://qrawthink.app.n8n.cloud
+          WF_FILE: ${{ matrix.workflow.file }}
+          WF_NAME: ${{ matrix.workflow.name }}
         run: |
-          # Clean payload to file (avoids shell expansion corrupting 25KB JSON with special chars)
+          # Clean payload (remove local-only keys)
           python3 -c "
           import json
-          with open('workflows/content-pipeline.json') as f:
+          with open('workflows/${{ matrix.workflow.file }}') as f:
               wf = json.load(f)
           for key in ['id', 'triggerCount', 'updatedAt', 'versionId', 'staticData', 'pinData']:
               wf.pop(key, None)
@@ -37,7 +46,7 @@ jobs:
           import json, sys
           data = json.load(sys.stdin)
           for wf in data.get('data', []):
-              if wf['name'] == 'RAW Network — Content Pipeline':
+              if wf['name'] == '$WF_NAME':
                   print(wf['id'])
                   sys.exit(0)
           " 2>/dev/null || true)

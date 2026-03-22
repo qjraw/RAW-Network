@@ -412,8 +412,52 @@
     },
     {
       "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/submissions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SUPABASE_SERVICE_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pipeline_id\": \"{{ $json.id }}\",\n  \"input_type\": \"{{ $json.metadata.input_type }}\",\n  \"raw_content\": {{ JSON.stringify($('Text Pass-Through').item.json.processed_content) }},\n  \"linkedin_content\": {{ JSON.stringify($json.linkedin.content) }},\n  \"linkedin_char_count\": {{ $json.linkedin.char_count }},\n  \"substack_content\": {{ JSON.stringify($json.substack.content) }},\n  \"substack_word_count\": {{ $json.substack.word_count }},\n  \"linkedin_status\": \"pending\",\n  \"substack_status\": \"pending\"\n}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000015",
+      "name": "Store in Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2520, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_SUPABASE_CREDENTIAL_ID",
+          "name": "Supabase Service Key"
+        }
+      },
+      "continueOnFail": true,
+      "notes": "CREDENTIAL SETUP REQUIRED:\nCreate an HTTP Header Auth credential in n8n with:\n  Header Name: Authorization\n  Header Value: Bearer YOUR_SUPABASE_SERVICE_ROLE_KEY\n\nAlso set these environment variables in n8n:\n  SUPABASE_URL = https://YOUR_PROJECT.supabase.co\n  SUPABASE_SERVICE_KEY = your-service-role-key\n\ncontinueOnFail = true so storage failures don't block the response."
+    },
+    {
+      "parameters": {
         "respondWith": "json",
-        "responseBody": "={{ $json }}",
+        "responseBody": "={{ $('Build Response').item.json }}",
         "options": {
           "responseCode": 200,
           "responseHeaders": {
@@ -434,7 +478,7 @@
       "name": "Respond to Webhook",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [2520, 300]
+      "position": [2760, 300]
     }
   ],
   "connections": {
@@ -568,6 +612,17 @@
       ]
     },
     "Build Response": {
+      "main": [
+        [
+          {
+            "node": "Store in Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store in Supabase": {
       "main": [
         [
           {
