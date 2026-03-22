@@ -32,7 +32,7 @@ jobs:
           import json
           with open('workflows/${{ matrix.workflow.file }}') as f:
               wf = json.load(f)
-          for key in ['id', 'triggerCount', 'updatedAt', 'versionId', 'staticData', 'pinData']:
+          for key in ['id', 'active', 'triggerCount', 'updatedAt', 'versionId', 'staticData', 'pinData']:
               wf.pop(key, None)
           wf['tags'] = [{'name': t['name']} for t in wf.get('tags', [])]
           with open('/tmp/payload.json', 'w') as f:
