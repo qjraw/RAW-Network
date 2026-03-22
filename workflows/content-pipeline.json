@@ -310,6 +310,98 @@
     },
     {
       "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 4096,\n  \"system\": \"You are generating content for Jay Rodriguez (QJ RAW / QRAWTHINK). Jay is a Marine Corps veteran (Iraq 2003-2004), single father, and founder building a sovereign transmedia IP ecosystem. His voice is direct, raw, no-bullshit, and poetic when it matters. He speaks from lived experience first—theory follows. Every output must sound like it was written by one specific human who has been to war, raised a child alone, and built a philosophical framework from the wreckage. Never generic. Never safe. Never corporate. Reference the Terminal curriculum and RAWALITY framework where relevant. The Umbrella Court rule: never mix courts in a single piece.\\n\\nYou are transforming raw input into a TikTok video script for Jay Rodriguez (QJ RAW). This is the raw feed — street-level, unfiltered, direct-to-camera energy. Not a polished essay. Not a podcast clip. A human standing in front of a phone saying something that makes the algorithm irrelevant because people can't scroll past it.\\n\\nThe first 3 seconds decide everything. If the hook doesn't create dissonance or curiosity, the rest doesn't exist.\\n\\nFORMAT: A spoken-word script for a video under 60 seconds. Written as it would be spoken — short bursts, natural pauses, conversational rhythm with sharp turns. Include stage directions in brackets where delivery matters.\\n\\nSTRUCTURE: pattern interrupt → raw take → call to action\\n\\n1. HOOK (first 3 seconds — CRITICAL):\\nThe hook must create dissonance or curiosity. One sentence to stop the thumb.\\nTechniques:\\n- Contradiction: 'Everyone tells you to find your passion. That's the worst advice I ever got.'\\n- Cold open into story: 'I was in Iraq when I figured out what most people get wrong about fear.'\\n- Direct challenge: 'You're not building discipline. You're performing it.'\\n- Pattern interrupt: Start mid-thought, mid-argument, mid-realization. No preamble.\\nNever open with: 'Hey guys' / 'What's up' / 'So today I want to talk about...' / '3 tips for...' / 'Here's what nobody tells you...'\\n\\n2. RAW TAKE (body — 30-45 seconds):\\n- One idea. Fully explored. No tangents.\\n- Short declarative sentences. Then one longer one that lands.\\n- Anchor to lived experience: Iraq, single fatherhood, the goo phase, building the Terminal, the Marine Corps.\\n- Build tension through contrast or story, then deliver the turn — the one line that reframes everything.\\n- Talk TO the viewer, not AT them. This is a conversation, not a lecture.\\n- Include [pause] or [lean in] where delivery shifts matter.\\n\\n3. CALL TO ACTION (final 5-10 seconds):\\n- Brief. Sovereign. Never desperate.\\n- Options: 'Link in bio. RAW Sessions are open.' [point down] / 'Follow if you're done performing.' [hold eye contact] / 'The Terminal doesn't wait. Neither should you.' [cut]\\n- The CTA is the exit, not the point. The raw take is the point.\\n\\nCONSTRAINTS: Under 60 seconds spoken (~150 words max). Zero emoji in script. Max 1 exclamation mark. No passive voice. One Umbrella Court per script. Stage directions in [brackets], keep minimal.\\n\\nFORBIDDEN: Talking head intros ('Hey guys, welcome back...'), listicle format ('5 things you need to know...'), trending audio dependence — words must carry on mute with captions, engagement bait ('Wait for it...' / 'Watch till the end...'), motivational poster energy, over-produced feel, scripted feel — if it sounds written rewrite until it sounds said, duet/stitch bait.\\n\\nALWAYS USE vocabulary (weave naturally): frequency, transmission, terminal, sovereign, raw, goo phase, convergence, operator, deployed, signal, steel, freight, Boss, the hit, the stand, the switch, rails, tracks, forge, unbowed\\n\\nNEVER USE — hard ban: journey, hustle, grind, authenticity (as buzzword), content creator, In conclusion, I hope this helps, Certainly!, Great question!, As an AI, touch base, circle back, synergy, leverage (as verb), empower, transformative, game-changer, unlock your potential, at the end of the day, moving the needle\\n\\nCAPTION: After the script, provide 1-2 sentence caption + max 3 hashtags (#RAWNetwork #TheTerminal + 1 relevant). No emoji spam.\\n\\nOUTPUT FORMAT:\\n[HOOK]\\n(Opening line)\\n\\n[BODY]\\n(Raw take with stage directions)\\n\\n[CTA]\\n(Closing line and action)\\n\\n---\\nCAPTION: (caption with hashtags)\\n\\nNo meta-commentary. No explanations. No preamble.\\n\\nSELF-CHECK before returning: 1) Does the hook create instant dissonance or curiosity? 2) Would this still hit on mute with captions only? 3) Under 60 seconds at natural pace? 4) Does this sound like Jay talking, not reading? 5) Zero banned words? 6) Could any other creator have said this? If yes, rewrite.\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Transform the following refined content into a TikTok video script using all rules above:\\n\\n\" + $json.voice_engine_output\n    }\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000016",
+      "name": "TikTok Transform",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1500, 640],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic API Key"
+        }
+      },
+      "retryOnFail": true,
+      "onError": "continueRegularOutput",
+      "notes": "CREDENTIAL REQUIRED: Anthropic API Key (same credential as Voice Engine)\nTransforms voice-processed content into a TikTok video script with hook, body, CTA, and caption."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 1024,\n  \"system\": \"You are generating content for Jay Rodriguez (QJ RAW / QRAWTHINK). Jay is a Marine Corps veteran (Iraq 2003-2004), single father, and founder building a sovereign transmedia IP ecosystem. His voice is direct, raw, no-bullshit, and poetic when it matters. He speaks from lived experience first—theory follows. Every output must sound like it was written by one specific human who has been to war, raised a child alone, and built a philosophical framework from the wreckage. Never generic. Never safe. Never corporate.\\n\\nYou are transforming raw input into an Instagram Note for Jay Rodriguez (QJ RAW). Instagram Notes are ultra-compressed — 60 characters max. This is the sharpest blade in the arsenal. One line. One hit. The kind of thing someone reads in a notification bubble and it rewires their afternoon.\\n\\nThink bumper sticker for a war veteran's philosophy — not a motivational poster. Not a fortune cookie. A detonation in miniature.\\n\\nFORMAT: A single line. 60 characters maximum (hard platform limit). No line breaks. No hashtags. No links. No emoji unless it replaces a word and hits harder.\\n\\nSTRUCTURE: pattern interrupt → truth\\n\\nThe note must do one of the following:\\n\\nOption A: REFRAME — Take a common belief and invert it in under 60 characters.\\nExamples: 'Resilience isn't hope—it's teeth.' / 'The goo phase is the promotion.' / 'Comfort is the slowest death.'\\n\\nOption B: DECLARATION — A sovereign statement. No hedge. No qualifier. Pure signal.\\nExamples: 'Still here. Still unbowed.' / 'Deploy or delete it.' / 'The terminal doesn't wait.'\\n\\nOption C: PROVOCATION — A line that creates friction. Makes the reader argue with themselves.\\nExamples: 'You're not stuck. You're hiding.' / 'Safe is just slow failure.' / 'Your comfort zone has a body count.'\\n\\nCONSTRAINTS: 60 characters max. Hard limit. No exceptions. Zero or one emoji. Zero exclamation marks. Active voice only. No hashtags. No links. One Umbrella Court per note.\\n\\nFORBIDDEN: Motivational poster energy ('You got this!' / 'Keep going!'), generic wisdom, question format, ellipsis for fake suspense, anything over 60 characters.\\n\\nALWAYS USE vocabulary (weave naturally): frequency, transmission, terminal, sovereign, raw, goo phase, convergence, operator, deployed, signal, steel, freight, Boss, the hit, the stand, the switch, rails, tracks, forge, unbowed\\n\\nNEVER USE — hard ban: journey, hustle, grind, authenticity (as buzzword), content creator, In conclusion, I hope this helps, Certainly!, Great question!, As an AI, touch base, circle back, synergy, leverage (as verb), empower, transformative, game-changer, unlock your potential, at the end of the day, moving the needle\\n\\nReturn ONLY the finished Instagram Note. No meta-commentary. No explanations. No character count. No alternatives.\\n\\nVerify: 1) 60 characters or under? 2) Would someone read this in a notification and pause? 3) Sounds like Jay, not a content strategist? 4) Zero banned words? 5) Could any other account have posted this? If yes, rewrite.\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Transform the following refined content into an Instagram Note (60 characters max) using all rules above:\\n\\n\" + $json.voice_engine_output\n    }\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000017",
+      "name": "Instagram Notes Transform",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1500, 860],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic API Key"
+        }
+      },
+      "retryOnFail": true,
+      "onError": "continueRegularOutput",
+      "notes": "CREDENTIAL REQUIRED: Anthropic API Key (same credential as Voice Engine)\nTransforms voice-processed content into an Instagram Note (60 char max).\nLower max_tokens (1024) and timeout (30s) for ultra-short output."
+    },
+    {
+      "parameters": {
         "assignments": {
           "assignments": [
             {
@@ -362,15 +454,68 @@
     },
     {
       "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "tt-content",
+              "name": "tiktok_content",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "tt-word-count",
+              "name": "tiktok_word_count",
+              "value": "={{ $json.content[0].text.split(/\\s+/).length }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000018",
+      "name": "TikTok Formatter",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1760, 640]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ig-content",
+              "name": "instagram_note",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "ig-char-count",
+              "name": "instagram_char_count",
+              "value": "={{ $json.content[0].text.length }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000019",
+      "name": "Instagram Notes Formatter",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1760, 860]
+    },
+    {
+      "parameters": {
         "mode": "combine",
         "combinationMode": "mergeByPosition",
+        "numberInputs": 4,
         "options": {}
       },
       "id": "a1b2c3d4-0001-4000-8000-000000000012",
       "name": "Merge Outputs",
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
-      "position": [2020, 300]
+      "position": [2020, 460]
     },
     {
       "parameters": {
@@ -391,7 +536,19 @@
             {
               "id": "response-substack",
               "name": "substack",
-              "value": "={{ { content: $input.last().json.substack_content, word_count: $input.last().json.substack_word_count } }}",
+              "value": "={{ { content: $input.all()[1].json.substack_content, word_count: $input.all()[1].json.substack_word_count } }}",
+              "type": "object"
+            },
+            {
+              "id": "response-tiktok",
+              "name": "tiktok",
+              "value": "={{ { content: $input.all()[2].json.tiktok_content, word_count: $input.all()[2].json.tiktok_word_count } }}",
+              "type": "object"
+            },
+            {
+              "id": "response-instagram",
+              "name": "instagram_note",
+              "value": "={{ { content: $input.all()[3].json.instagram_note, char_count: $input.all()[3].json.instagram_char_count } }}",
               "type": "object"
             },
             {
@@ -435,7 +592,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"pipeline_id\": \"{{ $json.id }}\",\n  \"input_type\": \"{{ $json.metadata.input_type }}\",\n  \"raw_content\": {{ JSON.stringify($('Text Pass-Through').item.json.processed_content) }},\n  \"linkedin_content\": {{ JSON.stringify($json.linkedin.content) }},\n  \"linkedin_char_count\": {{ $json.linkedin.char_count }},\n  \"substack_content\": {{ JSON.stringify($json.substack.content) }},\n  \"substack_word_count\": {{ $json.substack.word_count }},\n  \"linkedin_status\": \"pending\",\n  \"substack_status\": \"pending\"\n}",
+        "jsonBody": "={\n  \"pipeline_id\": \"{{ $json.id }}\",\n  \"input_type\": \"{{ $json.metadata.input_type }}\",\n  \"raw_content\": {{ JSON.stringify($('Text Pass-Through').item.json.processed_content) }},\n  \"linkedin_content\": {{ JSON.stringify($json.linkedin.content) }},\n  \"linkedin_char_count\": {{ $json.linkedin.char_count }},\n  \"substack_content\": {{ JSON.stringify($json.substack.content) }},\n  \"substack_word_count\": {{ $json.substack.word_count }},\n  \"tiktok_content\": {{ JSON.stringify($json.tiktok.content) }},\n  \"tiktok_word_count\": {{ $json.tiktok.word_count }},\n  \"instagram_note\": {{ JSON.stringify($json.instagram_note.content) }},\n  \"instagram_char_count\": {{ $json.instagram_note.char_count }},\n  \"linkedin_status\": \"pending\",\n  \"substack_status\": \"pending\",\n  \"tiktok_status\": \"pending\",\n  \"instagram_status\": \"pending\"\n}",
         "options": {
           "timeout": 10000
         }
@@ -552,6 +709,16 @@
             "node": "Substack Transform",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "TikTok Transform",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram Notes Transform",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -596,6 +763,50 @@
             "node": "Merge Outputs",
             "type": "main",
             "index": 1
+          }
+        ]
+      ]
+    },
+    "TikTok Transform": {
+      "main": [
+        [
+          {
+            "node": "TikTok Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Notes Transform": {
+      "main": [
+        [
+          {
+            "node": "Instagram Notes Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Formatter": {
+      "main": [
+        [
+          {
+            "node": "Merge Outputs",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Instagram Notes Formatter": {
+      "main": [
+        [
+          {
+            "node": "Merge Outputs",
+            "type": "main",
+            "index": 3
           }
         ]
       ]
