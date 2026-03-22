@@ -31,7 +31,7 @@ jobs:
           "
 
           # Check if workflow already exists by name
-          EXISTING=$(curl -sf "$N8N_API_URL/api/v1/workflows" \
+          EXISTING=$(curl -sf "$N8N_API_URL/api/v1/workflows?limit=250" \
             -H "X-N8N-API-KEY: $N8N_API_KEY" | \
             python3 -c "
           import json, sys
