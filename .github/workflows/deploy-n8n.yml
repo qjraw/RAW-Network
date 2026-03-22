@@ -1,0 +1,67 @@
+name: Deploy Workflows to n8n Cloud
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "workflows/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy content-pipeline to n8n
+        env:
+          N8N_API_KEY: ${{ secrets.N8N_API_KEY }}
+          N8N_API_URL: https://qrawthink.app.n8n.cloud
+        run: |
+          # Strip fields n8n API rejects on create
+          PAYLOAD=$(python3 -c "
+          import json, sys
+          with open('workflows/content-pipeline.json') as f:
+              wf = json.load(f)
+          for key in ['id', 'triggerCount', 'updatedAt', 'versionId', 'staticData', 'pinData']:
+              wf.pop(key, None)
+          wf['tags'] = [{'name': t['name']} for t in wf.get('tags', [])]
+          json.dump(wf, sys.stdout)
+          ")
+
+          # Check if workflow already exists by name
+          EXISTING=$(curl -sf "$N8N_API_URL/api/v1/workflows" \
+            -H "X-N8N-API-KEY: $N8N_API_KEY" | \
+            python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          for wf in data.get('data', []):
+              if wf['name'] == 'RAW Network — Content Pipeline':
+                  print(wf['id'])
+                  sys.exit(0)
+          " 2>/dev/null || true)
+
+          if [ -n "$EXISTING" ]; then
+            echo "Updating existing workflow $EXISTING..."
+            HTTP_CODE=$(curl -s -o /tmp/response.json -w "%{http_code}" \
+              -X PUT "$N8N_API_URL/api/v1/workflows/$EXISTING" \
+              -H "X-N8N-API-KEY: $N8N_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d "$PAYLOAD")
+          else
+            echo "Creating new workflow..."
+            HTTP_CODE=$(curl -s -o /tmp/response.json -w "%{http_code}" \
+              -X POST "$N8N_API_URL/api/v1/workflows" \
+              -H "X-N8N-API-KEY: $N8N_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d "$PAYLOAD")
+          fi
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            WF_ID=$(python3 -c "import json; print(json.load(open('/tmp/response.json'))['id'])" 2>/dev/null || echo "unknown")
+            echo "✓ Workflow deployed: $N8N_API_URL/workflow/$WF_ID"
+          else
+            echo "✗ Deploy failed (HTTP $HTTP_CODE)"
+            cat /tmp/response.json
+            exit 1
+          fi
