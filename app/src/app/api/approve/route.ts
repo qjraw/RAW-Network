@@ -31,6 +31,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!["linkedin", "substack", "tiktok", "instagram"].includes(platform)) {
+      return NextResponse.json(
+        { error: "Invalid platform. Must be 'linkedin', 'substack', 'tiktok', or 'instagram'." },
+        { status: 400 }
+      );
+    }
+
     // Call n8n approval webhook
     const n8nRes = await fetch(N8N_APPROVE_URL, {
       method: "POST",
@@ -51,7 +58,7 @@ export async function POST(request: NextRequest) {
 
     // Update status in Supabase (fire-and-forget)
     if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
-      const statusColumn = platform === "linkedin" ? "linkedin_status" : "substack_status";
+      const statusColumn = `${platform}_status`;
       const statusValue = action === "approve" ? "approved" : action === "reject" ? "rejected" : "pending";
 
       fetch(

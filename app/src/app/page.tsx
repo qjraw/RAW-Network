@@ -20,7 +20,8 @@ export default function HomePage() {
   const [statuses, setStatuses] = useState<PlatformStatus>({
     linkedin: "pending",
     substack: "pending",
-    threads_x: "pending",
+    tiktok: "pending",
+    instagram: "pending",
   });
   const [error, setError] = useState<string | null>(null);
 
@@ -46,7 +47,8 @@ export default function HomePage() {
         setStatuses({
           linkedin: "pending",
           substack: "pending",
-          threads_x: "pending",
+          tiktok: "pending",
+          instagram: "pending",
         });
         setPhase("review");
       } catch (err) {
@@ -91,7 +93,7 @@ export default function HomePage() {
   const handleReset = useCallback(() => {
     setPhase("input");
     setPipeline(null);
-    setStatuses({ linkedin: "pending", substack: "pending", threads_x: "pending" });
+    setStatuses({ linkedin: "pending", substack: "pending", tiktok: "pending", instagram: "pending" });
     setError(null);
   }, []);
 
@@ -164,8 +166,7 @@ export default function HomePage() {
         {/* ── Review Phase ── */}
         {phase === "review" && pipeline && (
           <>
-            <div className="grid gap-6 sm:grid-cols-2">
-              {/* LinkedIn Card */}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
               <ContentCard
                 platform="linkedin"
                 content={pipeline.linkedin.content}
@@ -180,7 +181,6 @@ export default function HomePage() {
                 />
               </ContentCard>
 
-              {/* Substack Card */}
               <ContentCard
                 platform="substack"
                 content={pipeline.substack.content}
@@ -192,6 +192,34 @@ export default function HomePage() {
                   onApprove={() => handleAction("substack", "approve")}
                   onEdit={() => handleAction("substack", "edit")}
                   onReject={() => handleAction("substack", "reject")}
+                />
+              </ContentCard>
+
+              <ContentCard
+                platform="tiktok"
+                content={pipeline.tiktok?.content ?? ""}
+                wordCount={pipeline.tiktok?.word_count}
+                status={statuses.tiktok}
+              >
+                <ApprovalActions
+                  status={statuses.tiktok}
+                  onApprove={() => handleAction("tiktok", "approve")}
+                  onEdit={() => handleAction("tiktok", "edit")}
+                  onReject={() => handleAction("tiktok", "reject")}
+                />
+              </ContentCard>
+
+              <ContentCard
+                platform="instagram"
+                content={pipeline.instagram_note?.content ?? ""}
+                charCount={pipeline.instagram_note?.char_count}
+                status={statuses.instagram}
+              >
+                <ApprovalActions
+                  status={statuses.instagram}
+                  onApprove={() => handleAction("instagram", "approve")}
+                  onEdit={() => handleAction("instagram", "edit")}
+                  onReject={() => handleAction("instagram", "reject")}
                 />
               </ContentCard>
             </div>

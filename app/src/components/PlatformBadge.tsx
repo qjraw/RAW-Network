@@ -14,10 +14,13 @@ const PLATFORM_CONFIG: Record<
     label: "Substack",
     className: "bg-[var(--color-accent)] text-white",
   },
-  threads_x: {
-    label: "Threads / X",
-    className:
-      "bg-[var(--color-text)] text-[var(--color-surface)]",
+  tiktok: {
+    label: "TikTok",
+    className: "bg-[#000000] text-[#ffffff]",
+  },
+  instagram: {
+    label: "Instagram",
+    className: "bg-[#E1306C] text-[#ffffff]",
   },
 };
 

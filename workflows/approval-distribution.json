@@ -1,7 +1,5 @@
 {
-  "id": "raw-approval-distribution-v1",
   "name": "RAW Network — Approval & Distribution",
-  "active": false,
   "nodes": [
     {
       "parameters": {
@@ -101,31 +99,203 @@
       "position": [480, 400]
     },
     {
-      "parameters": {},
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "approve-status",
+              "name": "status",
+              "value": "approved",
+              "type": "string"
+            },
+            {
+              "id": "approve-platform",
+              "name": "platform",
+              "value": "={{ $('Webhook Trigger').item.json.body.platform }}",
+              "type": "string"
+            },
+            {
+              "id": "approve-pipeline-id",
+              "name": "pipeline_id",
+              "value": "={{ $('Webhook Trigger').item.json.body.id }}",
+              "type": "string"
+            },
+            {
+              "id": "approve-action",
+              "name": "action",
+              "value": "approve",
+              "type": "string"
+            },
+            {
+              "id": "approve-timestamp",
+              "name": "timestamp",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            },
+            {
+              "id": "approve-message",
+              "name": "message",
+              "value": "={{ 'Content approved for ' + $('Webhook Trigger').item.json.body.platform }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
       "id": "b2c3d4e5-0001-4000-8000-000000000003",
-      "name": "Approve Handler Stub",
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [720, 260],
-      "notes": "P2 STUB — Approve path.\n\nImplement in P2:\n1. Route to Platform Router (LinkedIn vs Substack)\n2. LinkedIn path: POST to LinkedIn API with OAuth 2.0\n3. Substack path: POST to Substack API or webhook\n4. Log deployment result\n5. Callback to approval UI with deploy URL\n\nRequires: LinkedIn OAuth 2.0 credentials, Substack API token"
+      "name": "Approve Handler",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [720, 260]
     },
     {
-      "parameters": {},
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "reject-status",
+              "name": "status",
+              "value": "rejected",
+              "type": "string"
+            },
+            {
+              "id": "reject-platform",
+              "name": "platform",
+              "value": "={{ $('Webhook Trigger').item.json.body.platform }}",
+              "type": "string"
+            },
+            {
+              "id": "reject-pipeline-id",
+              "name": "pipeline_id",
+              "value": "={{ $('Webhook Trigger').item.json.body.id }}",
+              "type": "string"
+            },
+            {
+              "id": "reject-action",
+              "name": "action",
+              "value": "reject",
+              "type": "string"
+            },
+            {
+              "id": "reject-timestamp",
+              "name": "timestamp",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            },
+            {
+              "id": "reject-message",
+              "name": "message",
+              "value": "={{ 'Content rejected for ' + $('Webhook Trigger').item.json.body.platform }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
       "id": "b2c3d4e5-0001-4000-8000-000000000004",
-      "name": "Reject Handler Stub",
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [720, 400],
-      "notes": "P2 STUB — Reject path.\n\nImplement in P2:\n1. Log rejection reason from body.content\n2. Archive the rejected content for analytics\n3. Optionally notify the approval UI of discard\n\nNo external credentials required."
+      "name": "Reject Handler",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [720, 400]
     },
     {
-      "parameters": {},
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "edit-status",
+              "name": "status",
+              "value": "pending",
+              "type": "string"
+            },
+            {
+              "id": "edit-platform",
+              "name": "platform",
+              "value": "={{ $('Webhook Trigger').item.json.body.platform }}",
+              "type": "string"
+            },
+            {
+              "id": "edit-pipeline-id",
+              "name": "pipeline_id",
+              "value": "={{ $('Webhook Trigger').item.json.body.id }}",
+              "type": "string"
+            },
+            {
+              "id": "edit-action",
+              "name": "action",
+              "value": "edit",
+              "type": "string"
+            },
+            {
+              "id": "edit-edited-content",
+              "name": "edited_content",
+              "value": "={{ $('Webhook Trigger').item.json.body.edited_content || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "edit-timestamp",
+              "name": "timestamp",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            },
+            {
+              "id": "edit-message",
+              "name": "message",
+              "value": "={{ 'Content edited for ' + $('Webhook Trigger').item.json.body.platform + ' — ready for re-review' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
       "id": "b2c3d4e5-0001-4000-8000-000000000005",
-      "name": "Edit Handler Stub",
-      "type": "n8n-nodes-base.noOp",
-      "typeVersion": 1,
-      "position": [720, 540],
-      "notes": "P2 STUB — Edit path.\n\nImplement in P2:\n1. Take edited_content from request body\n2. Optionally re-run through Voice Engine for consistency check\n3. Return edited content back to approval UI for re-review\n4. Or send directly to platform if auto-approve is enabled\n\nNo external credentials required for the re-route; Anthropic API Key needed if re-running through Voice Engine."
+      "name": "Edit Handler",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [720, 540]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/submissions?pipeline_id=eq.{{ $json.pipeline_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SUPABASE_SERVICE_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "string",
+        "body": "={{ JSON.stringify({ [$json.platform + '_status']: $json.status }) }}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "b2c3d4e5-0001-4000-8000-000000000006",
+      "name": "Update Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [980, 400],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_SUPABASE_CREDENTIAL_ID",
+          "name": "Supabase Service Key"
+        }
+      },
+      "continueOnFail": true
     },
     {
       "parameters": {
@@ -140,36 +310,42 @@
             {
               "id": "resp-action",
               "name": "action",
-              "value": "={{ $('Webhook Trigger').item.json.body.action }}",
+              "value": "={{ $json.action }}",
               "type": "string"
             },
             {
               "id": "resp-platform",
               "name": "platform",
-              "value": "={{ $('Webhook Trigger').item.json.body.platform }}",
+              "value": "={{ $json.platform }}",
+              "type": "string"
+            },
+            {
+              "id": "resp-pipeline-id",
+              "name": "pipeline_id",
+              "value": "={{ $json.pipeline_id }}",
               "type": "string"
             },
             {
               "id": "resp-timestamp",
               "name": "timestamp",
-              "value": "={{ new Date().toISOString() }}",
+              "value": "={{ $json.timestamp }}",
               "type": "string"
             },
             {
               "id": "resp-message",
               "name": "message",
-              "value": "P2 stub — action acknowledged but not yet deployed. Distribution will be implemented in Phase 2.",
+              "value": "={{ $json.message }}",
               "type": "string"
             }
           ]
         },
         "options": {}
       },
-      "id": "b2c3d4e5-0001-4000-8000-000000000006",
+      "id": "b2c3d4e5-0001-4000-8000-000000000007",
       "name": "Build Response",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
-      "position": [980, 400]
+      "position": [1220, 400]
     },
     {
       "parameters": {
@@ -191,11 +367,11 @@
           }
         }
       },
-      "id": "b2c3d4e5-0001-4000-8000-000000000007",
+      "id": "b2c3d4e5-0001-4000-8000-000000000008",
       "name": "Respond to Webhook",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
-      "position": [1220, 400]
+      "position": [1460, 400]
     }
   ],
   "connections": {
@@ -214,50 +390,61 @@
       "main": [
         [
           {
-            "node": "Approve Handler Stub",
+            "node": "Approve Handler",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Reject Handler Stub",
+            "node": "Reject Handler",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Edit Handler Stub",
+            "node": "Edit Handler",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Approve Handler Stub": {
+    "Approve Handler": {
       "main": [
         [
           {
-            "node": "Build Response",
+            "node": "Update Supabase",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Reject Handler Stub": {
+    "Reject Handler": {
       "main": [
         [
           {
-            "node": "Build Response",
+            "node": "Update Supabase",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Edit Handler Stub": {
+    "Edit Handler": {
+      "main": [
+        [
+          {
+            "node": "Update Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Supabase": {
       "main": [
         [
           {
@@ -280,13 +467,11 @@
       ]
     }
   },
-  "pinData": {},
   "settings": {
     "executionOrder": "v1",
     "saveManualExecutions": true,
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "staticData": null,
   "tags": [
     {
       "name": "RAW Network",
@@ -296,8 +481,5 @@
       "name": "P2 — Approval & Distribution",
       "id": "p2-approval-distribution"
     }
-  ],
-  "triggerCount": 1,
-  "updatedAt": "2026-03-12T00:00:00.000Z",
-  "versionId": "p2-stub-v1"
+  ]
 }

@@ -3,7 +3,7 @@
  */
 
 /** Supported distribution platforms. */
-export type Platform = "linkedin" | "substack" | "threads_x";
+export type Platform = "linkedin" | "substack" | "tiktok" | "instagram";
 
 /** Status of a content piece through the approval workflow. */
 export type ApprovalStatus = "pending" | "approved" | "rejected";
@@ -50,7 +50,8 @@ export interface PipelineResponse {
   id: string;
   linkedin: PlatformContent;
   substack: PlatformContent;
-  threads_x?: PlatformContent;
+  tiktok: PlatformContent;
+  instagram_note: PlatformContent;
   metadata: {
     input_type: InputType;
     timestamp: string;

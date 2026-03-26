@@ -65,8 +65,14 @@ export async function POST(request: NextRequest) {
           linkedin_char_count: pipeline.linkedin?.char_count,
           substack_content: pipeline.substack?.content,
           substack_word_count: pipeline.substack?.word_count,
+          tiktok_content: pipeline.tiktok?.content,
+          tiktok_word_count: pipeline.tiktok?.word_count,
+          instagram_note: pipeline.instagram_note?.content,
+          instagram_char_count: pipeline.instagram_note?.char_count,
           linkedin_status: "pending",
           substack_status: "pending",
+          tiktok_status: "pending",
+          instagram_status: "pending",
         }),
       }).catch((err) => console.error("Supabase insert error:", err));
     }
