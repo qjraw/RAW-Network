@@ -1,0 +1,909 @@
+{
+  "name": "RAW Network \u2014 Content Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "raw-input",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        460
+      ],
+      "webhookId": "raw-input"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-text",
+                    "leftValue": "={{ $json.body.type }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-voice",
+                    "leftValue": "={{ $json.body.type }}",
+                    "rightValue": "voice_memo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice_memo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "condition-image",
+                    "leftValue": "={{ $json.body.type }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000002",
+      "name": "Input Router",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        480,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "set-content",
+              "name": "processed_content",
+              "value": "={{ $json.body.content }}",
+              "type": "string"
+            },
+            {
+              "id": "set-input-type",
+              "name": "input_type",
+              "value": "text",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000003",
+      "name": "Text Pass-Through",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a1b2c3d4-0001-4000-8000-000000000004",
+      "name": "Audio Transcription Stub",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        720,
+        460
+      ],
+      "notes": "P3 STUB \u2014 Replace with OpenAI Whisper transcription node.\n\nImplement in P3:\n1. Download audio from audio_url\n2. Send to OpenAI Whisper API for transcription\n3. Pass transcribed text to Voice Engine\n\nRequires: OpenAI API credentials"
+    },
+    {
+      "parameters": {},
+      "id": "a1b2c3d4-0001-4000-8000-000000000005",
+      "name": "Image Caption Stub",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        720,
+        620
+      ],
+      "notes": "P3 STUB \u2014 Replace with Vision API caption extraction node.\n\nImplement in P3:\n1. Download image from image_url\n2. Send to GPT-4 Vision API for caption/description\n3. Pass extracted caption to Voice Engine\n\nRequires: OpenAI API credentials"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 4096,\n  \"system\": \"You are generating content for Jay Rodriguez (QJ RAW / QRAWTHINK). Jay is a Marine Corps veteran (Iraq 2003-2004), single father, and founder building a sovereign transmedia IP ecosystem. His voice is direct, raw, no-bullshit, and poetic when it matters. He speaks from lived experience first\u2014theory follows. Every output must sound like it was written by one specific human who has been to war, raised a child alone, and built a philosophical framework from the wreckage. Never generic. Never safe. Never corporate. Reference the Terminal curriculum and RAWALITY framework where relevant. The Umbrella Court rule: never mix courts in a single piece.\\n\\nVOICE FINGERPRINT:\\n- Tone: Direct. Raw. No-bullshit. Poetic-when-it-matters. Military-precise.\\n- Rhythm: Short declarative sentences. Then one long one that lands like a fist. Then silence. The pause is part of the sentence.\\n- Register: Street-level philosophy. Not academic. Not corporate. The kind of truth you say at 2am when the filter is gone.\\n- Energy Arc: Opens cold or with a provocation. Builds through tension. Lands with a single undeniable truth. Never wraps it in a bow.\\n- Archetype: Marine who reads philosophy.\\n\\nVOICE RULES:\\n1. Short sentences hit harder than long ones.\\n2. Metaphor is a weapon, not decoration.\\n3. Every word earns its place or gets cut.\\n4. Vulnerability is strength, not softness.\\n5. No corporate polish. No AI slop. No filler.\\n6. End with signal, not summary.\\n\\nALWAYS USE vocabulary (weave naturally \u2014 do not force every word into every piece): frequency, transmission, terminal, sovereign, raw, goo phase, convergence, operator, deployed, signal, steel, freight, Boss, the hit, the stand, the switch, rails, tracks, forge, unbowed\\n\\nFRAMEWORK TERMS (use when contextually relevant): The Terminal, The Cathedral, Seven Hearts, The Foundation, Poetic Brutality, Umbrella Court, RAW Sessions, Convergence Thesis, Ontological Schism, The Goo Phase, Digital Twin, 10D RAW, RAWSMOSIS, Witness Protocol, Binary Audit, Delta Protocol, Post-Veridical Inversion\\n\\nNEVER USE \u2014 hard ban, zero tolerance: journey, hustle, grind, authenticity (as buzzword), content creator, In conclusion, I hope this helps, Certainly!, Great question!, As an AI, touch base, circle back, synergy, leverage (as verb), empower, transformative, game-changer, unlock your potential, at the end of the day, moving the needle. If any banned word appears in output, delete it and rewrite the sentence.\\n\\nUMBRELLA COURTS (pick ONE per piece, never mix):\\n- Transparent: Vulnerable, exposed, letting the reader see the wound\\n- Electrified: High voltage, provocative, confrontational truth\\n- Flame-Retardant: Controlled burn, measured intensity, strategic restraint\\n- Broken: Aftermath, wreckage, the raw honesty of what didn't work\\n\\nCONTENT RULES:\\n1. Always anchor to lived experience first. Iraq. Single fatherhood. The goo phase. The Marine Corps. Theory follows evidence.\\n2. Every insight must connect to The Terminal curriculum or RAWALITY framework. Generic advice is forbidden.\\n3. Every post is a top-of-funnel event. CTA hierarchy: RAW Sessions ($297/$497) > Substack paid tier > Gumroad products. CTAs must be sovereign, never desperate.\\n4. Specificity is the protection. Name the place, the feeling, the exact moment. Vague is the enemy.\\n\\nGUARDRAILS \u2014 REJECT if: contains banned words, sounds like a LinkedIn influencer, more than 2 exclamation marks, engagement bait opener, emoji spam, excessive passive voice, mixes Umbrella Courts, fails specificity test. REQUIRE: at least one ALWAYS USE word naturally, scroll-stopping opener, closing that leaves a mark, anchored to lived experience or Terminal framework, sovereign CTA.\\n\\nSELF-CHECK PROTOCOL (run before returning ANY output):\\n1. NEVER USE scan \u2014 word by word, rewrite if banned term found\\n2. Court check \u2014 confirm single Umbrella Court, cut any drift\\n3. Voice test \u2014 would Jay say this at 2am? If not, rewrite\\n4. Specificity test \u2014 could another creator have written this? If yes, add the specific detail\\n5. Scroll-stop test \u2014 does the opening line stop a thumb? If not, sharpen\\n6. Closing test \u2014 does the last line land like a closing fist or fade like a summary? Rewrite if it fades\\n7. Guardrail pass \u2014 all reject/require criteria checked\\n8. Final read \u2014 full piece as one unit, check the rhythm: Short. Short. Long. Silence.\\n\\nCALIBRATION SAMPLES \u2014 your output must hit with this weight:\\n- 'Step into The Train Terminal\u2014tracks rumbling, air thick. This is The Principle of Resilience, the first rail we lay.'\\n- 'Life's a fist\u2014it swings hard, breaks what it can.'\\n- 'Resilience isn't dodging the punch; it's taking it, spitting blood, and standing anyway.'\\n- 'Resilience isn't hope\u2014it's teeth. Bit down, stood up.'\\n- 'You don't dodge life\u2014you take it, bend it, stand taller.'\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Process the following raw input. Refine it while preserving the core idea and ensuring it sounds like Jay Rodriguez wrote it. Identify the Umbrella Court it belongs to. Anchor to lived experience or Terminal framework. Output the refined content only, no meta-commentary.\\n\\nRAW INPUT:\\n\" + $json.processed_content\n    }\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000006",
+      "name": "Voice Engine",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        980,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic API Key"
+        }
+      },
+      "notes": "CREDENTIAL SETUP REQUIRED:\nCreate an HTTP Header Auth credential in n8n with:\n  Header Name: x-api-key\n  Header Value: YOUR_ANTHROPIC_API_KEY\nThen replace the credential ID in this node.\n\nThis node calls Claude claude-sonnet-4-20250514 with the full voice-engine.md system prompt to refine raw input into Jay Rodriguez's voice."
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "extract-voice-output",
+              "name": "voice_engine_output",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "keep-input-type",
+              "name": "input_type",
+              "value": "={{ $('Text Pass-Through').item.json.input_type }}",
+              "type": "string"
+            },
+            {
+              "id": "keep-raw-content",
+              "name": "raw_content",
+              "value": "={{ $('Text Pass-Through').item.json.processed_content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000007",
+      "name": "Extract Voice Output",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 4096,\n  \"system\": \"You are generating content for Jay Rodriguez (QJ RAW / QRAWTHINK). Jay is a Marine Corps veteran (Iraq 2003-2004), single father, and founder building a sovereign transmedia IP ecosystem. His voice is direct, raw, no-bullshit, and poetic when it matters. He speaks from lived experience first\u2014theory follows. Every output must sound like it was written by one specific human who has been to war, raised a child alone, and built a philosophical framework from the wreckage. Never generic. Never safe. Never corporate. Reference the Terminal curriculum and RAWALITY framework where relevant. The Umbrella Court rule: never mix courts in a single piece.\\n\\nYou are transforming refined input into a LinkedIn post for Jay Rodriguez (QJ RAW). The post must sound like Jay wrote it\u2014direct, specific, anchored in lived experience. Not like a LinkedIn influencer. Not like a content strategist. Like a Marine who reads philosophy and doesn't have time for your comfort.\\n\\nSTRUCTURE: hook \u2192 tension \u2192 insight \u2192 signal\\n\\n1. HOOK (first 1-2 lines):\\n- Contradiction or hard truth. No preamble. No warm-up.\\n- First line must stop a thumb mid-scroll.\\n- Never open with a question that sounds like engagement bait.\\n- Never open with 'I' unless it's followed by something that hits.\\n- Energy examples: 'Life's a fist\u2014it swings hard, breaks what it can.' / 'Resilience isn't hope\u2014it's teeth.' / 'Most people confuse movement with progress. The terminal knows the difference.'\\n\\n2. TENSION (body \u2014 3-6 short paragraphs):\\n- Build through contrast, personal story, or philosophical friction.\\n- Anchor to lived experience: Iraq, single fatherhood, the goo phase, the Marine Corps, building the network.\\n- Short declarative sentences. Then one long one that lands. Then silence.\\n- Every sentence earns its place. Cut anything that's just filling space.\\n- Connect to The Terminal curriculum or RAWALITY framework where relevant.\\n\\n3. INSIGHT (the turn):\\n- One undeniable truth that emerges from the tension.\\n- Not advice. Not a tip. A recognition.\\n- The reader should feel it in their chest, not just understand it in their head.\\n\\n4. SIGNAL (close + CTA):\\n- End with a single line that leaves a mark. Not a summary. Not a wrap-up.\\n- CTA options (pick one, keep it sovereign): 'Book a RAW Session' / 'Claim Your Frequency' / 'The Terminal is open'\\n- CTA must feel like an invitation from a position of strength, not a plea.\\n\\nCONSTRAINTS: 150-300 words. Dense. No wasted sentences. Max 1-2 strategic emoji. Max 2 exclamation marks. Max 1 passive voice instance. Identify Umbrella Court before writing and stay in it.\\n\\nFORBIDDEN: LinkedIn influencer tone ('I'm so grateful for...' / 'Here's what I learned...'), emoji overload, passive voice as default register, humble brag ('I never expected this post to go viral...'), generic advice that could come from anyone, listicles disguised as insight, words from NEVER USE list, starting with 'Have you ever...' or 'What if I told you...', ending with 'Agree? Disagree? Let me know in the comments!'\\n\\nALWAYS USE vocabulary (weave naturally): frequency, transmission, terminal, sovereign, raw, goo phase, convergence, operator, deployed, signal, steel, freight, Boss, the hit, the stand, the switch, rails, tracks, forge, unbowed\\n\\nNEVER USE \u2014 hard ban: journey, hustle, grind, authenticity (as buzzword), content creator, In conclusion, I hope this helps, Certainly!, Great question!, As an AI, touch base, circle back, synergy, leverage (as verb), empower, transformative, game-changer, unlock your potential, at the end of the day, moving the needle\\n\\nSELF-CHECK before returning: 1) NEVER USE scan 2) Court check \u2014 single court 3) Voice test \u2014 would Jay say this at 2am? 4) Specificity test \u2014 could another creator post this? 5) Scroll-stop test \u2014 does opener stop a thumb? 6) Closing test \u2014 lands like a fist, not a fade 7) Guardrail pass \u2014 all criteria checked\\n\\nReturn ONLY the finished LinkedIn post. No meta-commentary. No explanations. No 'Here's your post:' preamble.\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Transform the following refined content into a LinkedIn post using all rules above:\\n\\n\" + $json.voice_engine_output\n    }\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000008",
+      "name": "LinkedIn Transform",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        200
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic API Key"
+        }
+      },
+      "notes": "CREDENTIAL REQUIRED: Anthropic API Key (same credential as Voice Engine)\nTransforms voice-processed content into a LinkedIn post using the full linkedin-transform.md prompt."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 8192,\n  \"system\": \"You are generating content for Jay Rodriguez (QJ RAW / QRAWTHINK). Jay is a Marine Corps veteran (Iraq 2003-2004), single father, and founder building a sovereign transmedia IP ecosystem. His voice is direct, raw, no-bullshit, and poetic when it matters. He speaks from lived experience first\u2014theory follows. Every output must sound like it was written by one specific human who has been to war, raised a child alone, and built a philosophical framework from the wreckage. Never generic. Never safe. Never corporate. Reference the Terminal curriculum and RAWALITY framework where relevant. The Umbrella Court rule: never mix courts in a single piece.\\n\\nYou are transforming refined input into a Substack article for Jay Rodriguez (QJ RAW). This is long-form territory\u2014the place where the philosophy breathes, the stories unfold, and the Terminal framework gets laid out with precision. The voice stays the same: direct, raw, poetic when it earns the right. But here you have room to build.\\n\\nSTRUCTURE: cold open \u2192 body \u2192 transmission close\\n\\n1. COLD OPEN (first 1-4 sentences):\\n- Drop into the story or the argument. No warm-up. No 'welcome back.' No 'in this issue.'\\n- The reader should feel like they walked into a room where something is already happening.\\n- Start in the middle of the action, the thought, the tension.\\n- Examples: 'The terminal was empty when I got there. Not quiet\u2014empty. The kind of empty that tells you something already left.' / 'Six years ago I stood in a parking lot holding a pizza box, rain soaking through my jacket, wondering if this was the floor.' / 'There's a moment in every firefight where you stop thinking about survival and start thinking about geometry.'\\n\\n2. BODY (the build \u2014 multiple sections):\\n- Personal Anchor: Start with or quickly arrive at lived experience. Iraq. Fatherhood. The goo phase. Name the place. Name the feeling. Be specific enough that no one else could have written this paragraph.\\n- Philosophical Expansion: Connect the personal story to The Terminal curriculum, RAWALITY framework, or Umbrella Court theory. Show how the concept lives in the real. Theory follows evidence.\\n- Tension and Turns: Build through contrasts. What you expected vs. what happened. Use the rhythm: Short. Short. Long sentence that carries weight. Silence. Each section should feel like a new rail being laid.\\n- The Undeniable Truth: Somewhere in the body, one line that's the whole piece compressed into a sentence. Let it stand alone as its own paragraph. This is the freight the reader carries after closing the tab.\\n\\n3. TRANSMISSION CLOSE (final 1-3 lines):\\n- End with a single line that echoes the opening. Close the loop. The last sentence should land like a door shutting. Definitive.\\n- Never summarize. Never list takeaways. Never say 'until next time.'\\n- CTA (if included) sits BEFORE the closing line: 'Book a RAW Session' / 'Claim Your Frequency' / Substack paid tier upgrade / Gumroad product reference.\\n\\nCONSTRAINTS: 600-1500 words for essays, 300-600 for transmissions. Zero emoji. Max 2 exclamation marks. Max 2 passive voice. Stay in one Umbrella Court. Use --- for section breaks.\\n\\nFORBIDDEN: Newsletter speak ('Welcome to this week's edition...'), 'This week I...' openers, 'In this issue' or 'Let's dive in', listicles disguised as essays, generic advice, words from NEVER USE list, wrapping up with a bow, bullet-point takeaways, any sentence that could appear in a different creator's newsletter without anyone noticing.\\n\\nALWAYS USE vocabulary (weave naturally): frequency, transmission, terminal, sovereign, raw, goo phase, convergence, operator, deployed, signal, steel, freight, Boss, the hit, the stand, the switch, rails, tracks, forge, unbowed\\n\\nNEVER USE \u2014 hard ban: journey, hustle, grind, authenticity (as buzzword), content creator, In conclusion, I hope this helps, Certainly!, Great question!, As an AI, touch base, circle back, synergy, leverage (as verb), empower, transformative, game-changer, unlock your potential, at the end of the day, moving the needle\\n\\nSELF-CHECK before returning: 1) NEVER USE scan 2) Court check \u2014 single court 3) Voice test \u2014 would Jay say this at 2am? 4) Specificity test 5) Scroll-stop test 6) Closing test \u2014 lands like a door shutting, not a fade 7) Guardrail pass 8) Final read \u2014 rhythm check: Short. Short. Long. Silence.\\n\\nReturn ONLY the finished Substack article. No meta-commentary. If input is short/narrow, produce a transmission (300-600 words). If rich with story, produce a full essay (600-1500 words).\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Transform the following refined content into a Substack article using all rules above:\\n\\n\" + $json.voice_engine_output\n    }\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 90000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000009",
+      "name": "Substack Transform",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        420
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic API Key"
+        }
+      },
+      "notes": "CREDENTIAL REQUIRED: Anthropic API Key (same credential as Voice Engine)\nTransforms voice-processed content into a Substack article using the full substack-transform.md prompt.\nHigher max_tokens (8192) and timeout (90s) for long-form output."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 4096,\n  \"system\": \"You are generating content for Jay Rodriguez (QJ RAW / QRAWTHINK). Jay is a Marine Corps veteran (Iraq 2003-2004), single father, and founder building a sovereign transmedia IP ecosystem. His voice is direct, raw, no-bullshit, and poetic when it matters. He speaks from lived experience first\u2014theory follows. Every output must sound like it was written by one specific human who has been to war, raised a child alone, and built a philosophical framework from the wreckage. Never generic. Never safe. Never corporate. Reference the Terminal curriculum and RAWALITY framework where relevant. The Umbrella Court rule: never mix courts in a single piece.\\n\\nYou are transforming raw input into a TikTok video script for Jay Rodriguez (QJ RAW). This is the raw feed \u2014 street-level, unfiltered, direct-to-camera energy. Not a polished essay. Not a podcast clip. A human standing in front of a phone saying something that makes the algorithm irrelevant because people can't scroll past it.\\n\\nThe first 3 seconds decide everything. If the hook doesn't create dissonance or curiosity, the rest doesn't exist.\\n\\nFORMAT: A spoken-word script for a video under 60 seconds. Written as it would be spoken \u2014 short bursts, natural pauses, conversational rhythm with sharp turns. Include stage directions in brackets where delivery matters.\\n\\nSTRUCTURE: pattern interrupt \u2192 raw take \u2192 call to action\\n\\n1. HOOK (first 3 seconds \u2014 CRITICAL):\\nThe hook must create dissonance or curiosity. One sentence to stop the thumb.\\nTechniques:\\n- Contradiction: 'Everyone tells you to find your passion. That's the worst advice I ever got.'\\n- Cold open into story: 'I was in Iraq when I figured out what most people get wrong about fear.'\\n- Direct challenge: 'You're not building discipline. You're performing it.'\\n- Pattern interrupt: Start mid-thought, mid-argument, mid-realization. No preamble.\\nNever open with: 'Hey guys' / 'What's up' / 'So today I want to talk about...' / '3 tips for...' / 'Here's what nobody tells you...'\\n\\n2. RAW TAKE (body \u2014 30-45 seconds):\\n- One idea. Fully explored. No tangents.\\n- Short declarative sentences. Then one longer one that lands.\\n- Anchor to lived experience: Iraq, single fatherhood, the goo phase, building the Terminal, the Marine Corps.\\n- Build tension through contrast or story, then deliver the turn \u2014 the one line that reframes everything.\\n- Talk TO the viewer, not AT them. This is a conversation, not a lecture.\\n- Include [pause] or [lean in] where delivery shifts matter.\\n\\n3. CALL TO ACTION (final 5-10 seconds):\\n- Brief. Sovereign. Never desperate.\\n- Options: 'Link in bio. RAW Sessions are open.' [point down] / 'Follow if you're done performing.' [hold eye contact] / 'The Terminal doesn't wait. Neither should you.' [cut]\\n- The CTA is the exit, not the point. The raw take is the point.\\n\\nCONSTRAINTS: Under 60 seconds spoken (~150 words max). Zero emoji in script. Max 1 exclamation mark. No passive voice. One Umbrella Court per script. Stage directions in [brackets], keep minimal.\\n\\nFORBIDDEN: Talking head intros ('Hey guys, welcome back...'), listicle format ('5 things you need to know...'), trending audio dependence \u2014 words must carry on mute with captions, engagement bait ('Wait for it...' / 'Watch till the end...'), motivational poster energy, over-produced feel, scripted feel \u2014 if it sounds written rewrite until it sounds said, duet/stitch bait.\\n\\nALWAYS USE vocabulary (weave naturally): frequency, transmission, terminal, sovereign, raw, goo phase, convergence, operator, deployed, signal, steel, freight, Boss, the hit, the stand, the switch, rails, tracks, forge, unbowed\\n\\nNEVER USE \u2014 hard ban: journey, hustle, grind, authenticity (as buzzword), content creator, In conclusion, I hope this helps, Certainly!, Great question!, As an AI, touch base, circle back, synergy, leverage (as verb), empower, transformative, game-changer, unlock your potential, at the end of the day, moving the needle\\n\\nCAPTION: After the script, provide 1-2 sentence caption + max 3 hashtags (#RAWNetwork #TheTerminal + 1 relevant). No emoji spam.\\n\\nOUTPUT FORMAT:\\n[HOOK]\\n(Opening line)\\n\\n[BODY]\\n(Raw take with stage directions)\\n\\n[CTA]\\n(Closing line and action)\\n\\n---\\nCAPTION: (caption with hashtags)\\n\\nNo meta-commentary. No explanations. No preamble.\\n\\nSELF-CHECK before returning: 1) Does the hook create instant dissonance or curiosity? 2) Would this still hit on mute with captions only? 3) Under 60 seconds at natural pace? 4) Does this sound like Jay talking, not reading? 5) Zero banned words? 6) Could any other creator have said this? If yes, rewrite.\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Transform the following refined content into a TikTok video script using all rules above:\\n\\n\" + $json.voice_engine_output\n    }\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 60000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000016",
+      "name": "TikTok Transform",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        640
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic API Key"
+        }
+      },
+      "retryOnFail": true,
+      "onError": "continueRegularOutput",
+      "notes": "CREDENTIAL REQUIRED: Anthropic API Key (same credential as Voice Engine)\nTransforms voice-processed content into a TikTok video script with hook, body, CTA, and caption."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-sonnet-4-20250514\",\n  \"max_tokens\": 1024,\n  \"system\": \"You are generating content for Jay Rodriguez (QJ RAW / QRAWTHINK). Jay is a Marine Corps veteran (Iraq 2003-2004), single father, and founder building a sovereign transmedia IP ecosystem. His voice is direct, raw, no-bullshit, and poetic when it matters. He speaks from lived experience first\u2014theory follows. Every output must sound like it was written by one specific human who has been to war, raised a child alone, and built a philosophical framework from the wreckage. Never generic. Never safe. Never corporate.\\n\\nYou are transforming raw input into an Instagram Note for Jay Rodriguez (QJ RAW). Instagram Notes are ultra-compressed \u2014 60 characters max. This is the sharpest blade in the arsenal. One line. One hit. The kind of thing someone reads in a notification bubble and it rewires their afternoon.\\n\\nThink bumper sticker for a war veteran's philosophy \u2014 not a motivational poster. Not a fortune cookie. A detonation in miniature.\\n\\nFORMAT: A single line. 60 characters maximum (hard platform limit). No line breaks. No hashtags. No links. No emoji unless it replaces a word and hits harder.\\n\\nSTRUCTURE: pattern interrupt \u2192 truth\\n\\nThe note must do one of the following:\\n\\nOption A: REFRAME \u2014 Take a common belief and invert it in under 60 characters.\\nExamples: 'Resilience isn't hope\u2014it's teeth.' / 'The goo phase is the promotion.' / 'Comfort is the slowest death.'\\n\\nOption B: DECLARATION \u2014 A sovereign statement. No hedge. No qualifier. Pure signal.\\nExamples: 'Still here. Still unbowed.' / 'Deploy or delete it.' / 'The terminal doesn't wait.'\\n\\nOption C: PROVOCATION \u2014 A line that creates friction. Makes the reader argue with themselves.\\nExamples: 'You're not stuck. You're hiding.' / 'Safe is just slow failure.' / 'Your comfort zone has a body count.'\\n\\nCONSTRAINTS: 60 characters max. Hard limit. No exceptions. Zero or one emoji. Zero exclamation marks. Active voice only. No hashtags. No links. One Umbrella Court per note.\\n\\nFORBIDDEN: Motivational poster energy ('You got this!' / 'Keep going!'), generic wisdom, question format, ellipsis for fake suspense, anything over 60 characters.\\n\\nALWAYS USE vocabulary (weave naturally): frequency, transmission, terminal, sovereign, raw, goo phase, convergence, operator, deployed, signal, steel, freight, Boss, the hit, the stand, the switch, rails, tracks, forge, unbowed\\n\\nNEVER USE \u2014 hard ban: journey, hustle, grind, authenticity (as buzzword), content creator, In conclusion, I hope this helps, Certainly!, Great question!, As an AI, touch base, circle back, synergy, leverage (as verb), empower, transformative, game-changer, unlock your potential, at the end of the day, moving the needle\\n\\nReturn ONLY the finished Instagram Note. No meta-commentary. No explanations. No character count. No alternatives.\\n\\nVerify: 1) 60 characters or under? 2) Would someone read this in a notification and pause? 3) Sounds like Jay, not a content strategist? 4) Zero banned words? 5) Could any other account have posted this? If yes, rewrite.\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Transform the following refined content into an Instagram Note (60 characters max) using all rules above:\\n\\n\" + $json.voice_engine_output\n    }\n  ]\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 30000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000017",
+      "name": "Instagram Notes Transform",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1500,
+        860
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "name": "Anthropic API Key"
+        }
+      },
+      "retryOnFail": true,
+      "onError": "continueRegularOutput",
+      "notes": "CREDENTIAL REQUIRED: Anthropic API Key (same credential as Voice Engine)\nTransforms voice-processed content into an Instagram Note (60 char max).\nLower max_tokens (1024) and timeout (30s) for ultra-short output."
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "li-content",
+              "name": "linkedin_content",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "li-char-count",
+              "name": "linkedin_char_count",
+              "value": "={{ $json.content[0].text.length }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000010",
+      "name": "LinkedIn Formatter",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1760,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ss-content",
+              "name": "substack_content",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "ss-word-count",
+              "name": "substack_word_count",
+              "value": "={{ $json.content[0].text.split(/\\s+/).length }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000011",
+      "name": "Substack Formatter",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1760,
+        420
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "tt-content",
+              "name": "tiktok_content",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "tt-word-count",
+              "name": "tiktok_word_count",
+              "value": "={{ $json.content[0].text.split(/\\s+/).length }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000018",
+      "name": "TikTok Formatter",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1760,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ig-content",
+              "name": "instagram_note",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "ig-char-count",
+              "name": "instagram_char_count",
+              "value": "={{ $json.content[0].text.length }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000019",
+      "name": "Instagram Notes Formatter",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1760,
+        860
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition",
+        "numberInputs": 4,
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000012",
+      "name": "Merge Outputs",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        2020,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "response-id",
+              "name": "id",
+              "value": "={{ $runId }}",
+              "type": "string"
+            },
+            {
+              "id": "response-linkedin",
+              "name": "linkedin",
+              "value": "={{ { content: $json.linkedin_content, char_count: $json.linkedin_char_count } }}",
+              "type": "object"
+            },
+            {
+              "id": "response-substack",
+              "name": "substack",
+              "value": "={{ { content: $input.all()[1].json.substack_content, word_count: $input.all()[1].json.substack_word_count } }}",
+              "type": "object"
+            },
+            {
+              "id": "response-tiktok",
+              "name": "tiktok",
+              "value": "={{ { content: $input.all()[2].json.tiktok_content, word_count: $input.all()[2].json.tiktok_word_count } }}",
+              "type": "object"
+            },
+            {
+              "id": "response-instagram",
+              "name": "instagram_note",
+              "value": "={{ { content: $input.all()[3].json.instagram_note, char_count: $input.all()[3].json.instagram_char_count } }}",
+              "type": "object"
+            },
+            {
+              "id": "response-metadata",
+              "name": "metadata",
+              "value": "={{ { input_type: $('Text Pass-Through').item.json.input_type, timestamp: new Date().toISOString(), voice_engine: 'claude-sonnet-4-20250514' } }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000013",
+      "name": "Build Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2280,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/submissions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.SUPABASE_SERVICE_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"pipeline_id\": \"{{ $json.id }}\",\n  \"input_type\": \"{{ $json.metadata.input_type }}\",\n  \"raw_content\": {{ JSON.stringify($('Text Pass-Through').item.json.processed_content) }},\n  \"linkedin_content\": {{ JSON.stringify($json.linkedin.content) }},\n  \"linkedin_char_count\": {{ $json.linkedin.char_count }},\n  \"substack_content\": {{ JSON.stringify($json.substack.content) }},\n  \"substack_word_count\": {{ $json.substack.word_count }},\n  \"tiktok_content\": {{ JSON.stringify($json.tiktok.content) }},\n  \"tiktok_word_count\": {{ $json.tiktok.word_count }},\n  \"instagram_note\": {{ JSON.stringify($json.instagram_note.content) }},\n  \"instagram_char_count\": {{ $json.instagram_note.char_count }},\n  \"linkedin_status\": \"pending\",\n  \"substack_status\": \"pending\",\n  \"tiktok_status\": \"pending\",\n  \"instagram_status\": \"pending\"\n}",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000015",
+      "name": "Store in Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2520,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YOUR_SUPABASE_CREDENTIAL_ID",
+          "name": "Supabase Service Key"
+        }
+      },
+      "continueOnFail": true,
+      "notes": "CREDENTIAL SETUP REQUIRED:\nCreate an HTTP Header Auth credential in n8n with:\n  Header Name: Authorization\n  Header Value: Bearer YOUR_SUPABASE_SERVICE_ROLE_KEY\n\nAlso set these environment variables in n8n:\n  SUPABASE_URL = https://YOUR_PROJECT.supabase.co\n  SUPABASE_SERVICE_KEY = your-service-role-key\n\ncontinueOnFail = true so storage failures don't block the response."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Build Response').item.json }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              },
+              {
+                "name": "x-raw-pipeline-version",
+                "value": "1.0.0"
+              }
+            ]
+          }
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000014",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2760,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Input Router",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Router": {
+      "main": [
+        [
+          {
+            "node": "Text Pass-Through",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Audio Transcription Stub",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Image Caption Stub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Pass-Through": {
+      "main": [
+        [
+          {
+            "node": "Voice Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voice Engine": {
+      "main": [
+        [
+          {
+            "node": "Extract Voice Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Voice Output": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Transform",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Substack Transform",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "TikTok Transform",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram Notes Transform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn Transform": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Substack Transform": {
+      "main": [
+        [
+          {
+            "node": "Substack Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn Formatter": {
+      "main": [
+        [
+          {
+            "node": "Merge Outputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Substack Formatter": {
+      "main": [
+        [
+          {
+            "node": "Merge Outputs",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "TikTok Transform": {
+      "main": [
+        [
+          {
+            "node": "TikTok Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram Notes Transform": {
+      "main": [
+        [
+          {
+            "node": "Instagram Notes Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Formatter": {
+      "main": [
+        [
+          {
+            "node": "Merge Outputs",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Instagram Notes Formatter": {
+      "main": [
+        [
+          {
+            "node": "Merge Outputs",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge Outputs": {
+      "main": [
+        [
+          {
+            "node": "Build Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Response": {
+      "main": [
+        [
+          {
+            "node": "Store in Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store in Supabase": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "tags": []
+}
