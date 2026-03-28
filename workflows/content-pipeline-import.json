@@ -198,7 +198,7 @@
       ],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "id": "OQ6HwwXiabp2A0Eh",
           "name": "Anthropic API Key"
         }
       },
@@ -280,7 +280,7 @@
       ],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "id": "OQ6HwwXiabp2A0Eh",
           "name": "Anthropic API Key"
         }
       },
@@ -327,7 +327,7 @@
       ],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "id": "OQ6HwwXiabp2A0Eh",
           "name": "Anthropic API Key"
         }
       },
@@ -374,7 +374,7 @@
       ],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "id": "OQ6HwwXiabp2A0Eh",
           "name": "Anthropic API Key"
         }
       },
@@ -423,7 +423,7 @@
       ],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "YOUR_ANTHROPIC_CREDENTIAL_ID",
+          "id": "OQ6HwwXiabp2A0Eh",
           "name": "Anthropic API Key"
         }
       },
