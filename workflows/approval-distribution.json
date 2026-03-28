@@ -257,18 +257,18 @@
     {
       "parameters": {
         "method": "PATCH",
-        "url": "=https://neajzooemwxxgctsumqr.supabase.co/rest/v1/submissions?pipeline_id=eq.{{ $json.pipeline_id }}",
+        "url": "={{ $env.SUPABASE_URL }}/rest/v1/submissions?pipeline_id=eq.{{ $json.pipeline_id }}",
         "authentication": "none",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
             {
               "name": "apikey",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lYWp6b29lbXd4eGdjdHN1bXFyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzA2OTk1MSwiZXhwIjoyMDg4NjQ1OTUxfQ.1b7iaYZ1RSDDuhQxuEwmoQ0krKvuGYv7hAO1kHmzU5c"
+              "value": "={{ $env.SUPABASE_SERVICE_KEY }}"
             },
             {
               "name": "Authorization",
-              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lYWp6b29lbXd4eGdjdHN1bXFyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzA2OTk1MSwiZXhwIjoyMDg4NjQ1OTUxfQ.1b7iaYZ1RSDDuhQxuEwmoQ0krKvuGYv7hAO1kHmzU5c"
+              "value": "=Bearer {{ $env.SUPABASE_SERVICE_KEY }}"
             },
             {
               "name": "Content-Type",
