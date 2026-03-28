@@ -202,7 +202,7 @@
           "name": "Anthropic API Key"
         }
       },
-      "notes": "CREDENTIAL SETUP REQUIRED:\nCreate an HTTP Header Auth credential in n8n with:\n  Header Name: x-api-key\n  Header Value: YOUR_ANTHROPIC_API_KEY\nThen replace the credential ID in this node.\n\nThis node calls Claude claude-sonnet-4-20250514 with the full voice-engine.md system prompt to refine raw input into Jay Rodriguez's voice."
+      "notes": "Voice Engine \u2014 Claude claude-sonnet-4-20250514 with full voice-engine.md system prompt."
     },
     {
       "parameters": {
